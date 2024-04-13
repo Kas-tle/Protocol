@@ -18,7 +18,7 @@ netty-transport-raknet = { group = "org.cloudburstmc.netty", name = "netty-trans
 jose4j = { group = "org.bitbucket.b_c", name = "jose4j", version = "0.9.3" }
 natives = { group = "com.nukkitx", name = "natives", version = "1.0.3" }
 math = { group = "org.cloudburstmc.math", name = "immutable", version = "2.0-SNAPSHOT" }
-nbt = { group = "org.cloudburstmc", name = "nbt", version = "3.0.2.Final" }
+nbt = { group = "com.github.Kas-tle", name = "NBT", version = "df0e38290e" }
 lmbda = { group = "org.lanternpowered", name = "lmbda", version = "2.0.0" }
 
 snappy = { group = "io.airlift", name = "aircompressor", version = "0.25" }
