@@ -62,6 +62,11 @@ public class CorrectPlayerMovePredictionPacket implements BedrockPacket {
      */
     private Vector2f vehicleRotation;
 
+    /**
+     * @since v712
+     */
+    private Float vehicleAngularVelocity;
+
     @Override
     public PacketSignal handle(BedrockPacketHandler handler) {
         return handler.handle(this);
@@ -71,4 +76,14 @@ public class CorrectPlayerMovePredictionPacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.CORRECT_PLAYER_MOVE_PREDICTION;
     }
+
+    @Override
+    public CorrectPlayerMovePredictionPacket clone() {
+        try {
+            return (CorrectPlayerMovePredictionPacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

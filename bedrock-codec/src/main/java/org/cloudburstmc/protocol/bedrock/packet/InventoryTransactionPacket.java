@@ -52,6 +52,11 @@ public class InventoryTransactionPacket implements BedrockPacket {
      */
     private ItemUseTransaction.TriggerType triggerType;
 
+    /**
+     * @since v712
+     */
+    private ItemUseTransaction.PredictedResult clientInteractPrediction;
+
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {
         return handler.handle(this);
@@ -60,4 +65,14 @@ public class InventoryTransactionPacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.INVENTORY_TRANSACTION;
     }
+
+    @Override
+    public InventoryTransactionPacket clone() {
+        try {
+            return (InventoryTransactionPacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

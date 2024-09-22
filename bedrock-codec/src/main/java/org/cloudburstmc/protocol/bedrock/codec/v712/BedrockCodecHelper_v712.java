@@ -66,6 +66,9 @@ public class BedrockCodecHelper_v712 extends BedrockCodecHelper_v575 {
             List<ItemDescriptorWithCount> ingredients = ((AutoCraftRecipeAction) action).getIngredients();
             byteBuf.writeByte(ingredients.size());
             writeArray(byteBuf, ingredients, this::writeIngredient);
+        } else if (action.getType().equals(ItemStackRequestActionType.CRAFT_LOOM)) {
+            this.writeString(byteBuf, ((CraftLoomAction) action).getPatternId());
+            byteBuf.writeByte(((CraftLoomAction) action).getTimesCrafted());
         } else {
             super.writeRequestActionData(byteBuf, action);
         }
@@ -86,6 +89,10 @@ public class BedrockCodecHelper_v712 extends BedrockCodecHelper_v575 {
             List<ItemDescriptorWithCount> ingredients = new ObjectArrayList<>();
             this.readArray(byteBuf, ingredients, ByteBuf::readUnsignedByte, this::readIngredient);
             return new AutoCraftRecipeAction(recipeNetworkId, timesCrafted, ingredients, numberOfRequestedCrafts);
+        } else if (type.equals(ItemStackRequestActionType.CRAFT_LOOM)) {
+            String patternId = this.readString(byteBuf);
+            int timesCrafted = byteBuf.readUnsignedByte();
+            return new CraftLoomAction(patternId, timesCrafted);
         } else {
             return super.readRequestActionData(byteBuf, type);
         }
@@ -134,6 +141,7 @@ public class BedrockCodecHelper_v712 extends BedrockCodecHelper_v575 {
         this.writeVector3f(buffer, packet.getPlayerPosition());
         this.writeVector3f(buffer, packet.getClickPosition());
         VarInts.writeUnsignedInt(buffer, packet.getBlockDefinition().getRuntimeId());
+        VarInts.writeUnsignedInt(buffer, packet.getClientInteractPrediction().ordinal());
     }
 
     @Override
@@ -147,14 +155,17 @@ public class BedrockCodecHelper_v712 extends BedrockCodecHelper_v575 {
         packet.setPlayerPosition(this.readVector3f(buffer));
         packet.setClickPosition(this.readVector3f(buffer));
         packet.setBlockDefinition(this.blockDefinitions.getDefinition(VarInts.readUnsignedInt(buffer)));
+        packet.setClientInteractPrediction(ItemUseTransaction.PredictedResult.values()[VarInts.readUnsignedInt(buffer)]);
     }
 
-    protected void writeFullContainerName(ByteBuf buffer, FullContainerName containerName) {
+    @Override
+    public void writeFullContainerName(ByteBuf buffer, FullContainerName containerName) {
         this.writeContainerSlotType(buffer, containerName.getContainer());
-        buffer.writeIntLE(containerName.getDynamicId());
+        buffer.writeIntLE(containerName.getDynamicId() == null ? 0 : containerName.getDynamicId());
     }
 
-    protected FullContainerName readFullContainerName(ByteBuf buffer) {
+    @Override
+    public FullContainerName readFullContainerName(ByteBuf buffer) {
         return new FullContainerName(this.readContainerSlotType(buffer), buffer.readIntLE());
     }
 }

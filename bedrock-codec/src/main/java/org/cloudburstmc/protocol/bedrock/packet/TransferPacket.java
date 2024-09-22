@@ -11,6 +11,10 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 public class TransferPacket implements BedrockPacket {
     private String address;
     private int port;
+    /**
+     * @since v729
+     */
+    private boolean reloadWorld;
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {
@@ -20,4 +24,14 @@ public class TransferPacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.TRANSFER;
     }
+
+    @Override
+    public TransferPacket clone() {
+        try {
+            return (TransferPacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+
