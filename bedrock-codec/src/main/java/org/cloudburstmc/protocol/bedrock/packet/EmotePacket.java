@@ -24,6 +24,10 @@ public class EmotePacket implements BedrockPacket {
     private String platformId;
     private String emoteId;
     private final Set<EmoteFlag> flags = EnumSet.noneOf(EmoteFlag.class);
+    /**
+     * @since v729
+     */
+    private int emoteDuration;
 
     @Override
     public PacketSignal handle(BedrockPacketHandler handler) {
@@ -33,4 +37,14 @@ public class EmotePacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.EMOTE;
     }
+
+    @Override
+    public EmotePacket clone() {
+        try {
+            return (EmotePacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

@@ -12,7 +12,7 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
 public class AddItemEntityPacket implements BedrockPacket {
-    private final EntityDataMap metadata = new EntityDataMap();
+    private EntityDataMap metadata = new EntityDataMap();
     private long uniqueEntityId;
     private long runtimeEntityId;
     private ItemData itemInHand;
@@ -28,4 +28,14 @@ public class AddItemEntityPacket implements BedrockPacket {
     public BedrockPacketType getPacketType() {
         return BedrockPacketType.ADD_ITEM_ENTITY;
     }
+
+    @Override
+    public AddItemEntityPacket clone() {
+        try {
+            return (AddItemEntityPacket) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
+    }
 }
+

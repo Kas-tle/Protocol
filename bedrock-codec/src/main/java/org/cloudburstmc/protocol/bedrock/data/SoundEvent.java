@@ -152,6 +152,7 @@ public enum SoundEvent {
     IMITATE_ELDER_GUARDIAN,
     IMITATE_ENDER_DRAGON,
     IMITATE_ENDERMAN,
+    IMITATE_ENDERMITE,
     IMITATE_EVOCATION_ILLAGER,
     IMITATE_GHAST,
     IMITATE_HUSK,
@@ -566,6 +567,30 @@ public enum SoundEvent {
      */
     COPPER_BULB_OFF,
     /**
+     * @since v630
+     */
+    TRIAL_SPAWNER_OPEN_SHUTTER,
+    /**
+     * @since v630
+     */
+    TRIAL_SPAWNER_EJECT_ITEM,
+    /**
+     * @since v630
+     */
+    TRIAL_SPAWNER_DETECT_PLAYER,
+    /**
+     * @since v630
+     */
+    TRIAL_SPAWNER_SPAWN_MOB,
+    /**
+     * @since v630
+     */
+    TRIAL_SPAWNER_CLOSE_SHUTTER,
+    /**
+     * @since v630
+     */
+    TRIAL_SPAWNER_AMBIENT,
+    /**
      * @since v649
      */
     AMBIENT_IN_AIR,
@@ -717,6 +742,14 @@ public enum SoundEvent {
      * @since v712
      */
     VAULT_REJECT_REWARDED_PLAYER,
+    /**
+     * @since v729
+     */
+    IMITATE_DROWNED,
+    /**
+     * @since v729
+     */
+    BUNDLE_INSERT_FAILED,
 
     UNDEFINED
 }
