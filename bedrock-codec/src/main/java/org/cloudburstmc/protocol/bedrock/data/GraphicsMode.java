@@ -1,4 +1,5 @@
 package org.cloudburstmc.protocol.bedrock.data;
+import org.cloudburstmc.protocol.common.util.NullableEnum;
 
 public enum GraphicsMode {
     SIMPLE,
@@ -9,6 +10,6 @@ public enum GraphicsMode {
     private static final GraphicsMode[] VALUES = values();
 
     public static GraphicsMode from(int id) {
-        return VALUES[id];
+        return NullableEnum.get(VALUES, id);
     }
 }
