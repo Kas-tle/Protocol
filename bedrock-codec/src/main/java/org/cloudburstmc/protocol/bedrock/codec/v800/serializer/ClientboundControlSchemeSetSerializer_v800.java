@@ -7,6 +7,7 @@ import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
 import org.cloudburstmc.protocol.bedrock.data.ControlScheme;
 import org.cloudburstmc.protocol.bedrock.packet.ClientboundControlSchemeSetPacket;
+import org.cloudburstmc.protocol.common.util.NullableEnum;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ClientboundControlSchemeSetSerializer_v800 implements BedrockPacketSerializer<ClientboundControlSchemeSetPacket> {
@@ -21,6 +22,6 @@ public class ClientboundControlSchemeSetSerializer_v800 implements BedrockPacket
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, ClientboundControlSchemeSetPacket packet) {
-        packet.setScheme(VALUES[buffer.readUnsignedByte()]);
+        packet.setScheme(NullableEnum.get(VALUES, buffer.readUnsignedByte()));
     }
 }

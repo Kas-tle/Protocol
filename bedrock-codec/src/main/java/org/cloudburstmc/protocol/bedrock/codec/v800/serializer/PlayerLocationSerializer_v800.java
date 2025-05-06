@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
 import org.cloudburstmc.protocol.bedrock.packet.PlayerLocationPacket;
+import org.cloudburstmc.protocol.common.util.NullableEnum;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -26,7 +27,7 @@ public class PlayerLocationSerializer_v800 implements BedrockPacketSerializer<Pl
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, PlayerLocationPacket packet) {
-        packet.setType(VALUES[buffer.readIntLE()]);
+        packet.setType(NullableEnum.get(VALUES, buffer.readIntLE()));
         packet.setTargetEntityId(VarInts.readLong(buffer));
         if (packet.getType() == PlayerLocationPacket.Type.COORDINATES) {
             packet.setPosition(helper.readVector3f(buffer));

@@ -9,6 +9,7 @@ import org.cloudburstmc.protocol.bedrock.data.ControlScheme;
 import org.cloudburstmc.protocol.bedrock.data.camera.CameraAimAssistPreset;
 import org.cloudburstmc.protocol.bedrock.data.camera.CameraAudioListener;
 import org.cloudburstmc.protocol.bedrock.data.camera.CameraPreset;
+import org.cloudburstmc.protocol.common.util.NullableEnum;
 import org.cloudburstmc.protocol.common.util.OptionalBoolean;
 
 public class CameraPresetsSerializer_v800 extends CameraPresetsSerializer_v776 {
@@ -47,11 +48,11 @@ public class CameraPresetsSerializer_v800 extends CameraPresetsSerializer_v776 {
         Float minYawLimit = helper.readOptional(buffer, null, ByteBuf::readFloatLE);
         Float maxYawLimit = helper.readOptional(buffer, null, ByteBuf::readFloatLE);
 
-        CameraAudioListener listener = helper.readOptional(buffer, null, buf -> CameraAudioListener.values()[buf.readUnsignedByte()]);
+        CameraAudioListener listener = helper.readOptional(buffer, null, buf -> NullableEnum.get(CameraAudioListener.values(), buf.readUnsignedByte()));
         OptionalBoolean effects = helper.readOptional(buffer, OptionalBoolean.empty(), buf -> OptionalBoolean.of(buf.readBoolean()));
         OptionalBoolean alignTargetAndCameraForward = helper.readOptional(buffer, OptionalBoolean.empty(), buf -> OptionalBoolean.of(buf.readBoolean()));
         CameraAimAssistPreset aimAssist = helper.readOptional(buffer, null, buf -> readCameraAimAssist(buf, helper));
-        ControlScheme controlScheme = helper.readOptional(buffer, null, buf -> VALUES[buf.readUnsignedByte()]);
+        ControlScheme controlScheme = helper.readOptional(buffer, null, buf -> NullableEnum.get(VALUES, buf.readUnsignedByte()));
 
         return new CameraPreset(identifier, parentPreset, pos, yaw, pitch, viewOffset, radius, minYawLimit, maxYawLimit, listener, effects, rotationSpeed, snapToTarget, entityOffset, horizontalRotationLimit, verticalRotationLimit, continueTargeting, alignTargetAndCameraForward, blockListeningRadius, aimAssist, controlScheme);
     }

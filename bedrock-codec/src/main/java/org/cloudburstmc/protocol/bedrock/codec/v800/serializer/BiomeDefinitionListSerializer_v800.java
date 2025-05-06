@@ -243,14 +243,14 @@ public class BiomeDefinitionListSerializer_v800 implements BedrockPacketSerializ
         List<BiomeCoordinateData> coordinates = new ObjectArrayList<>();
         helper.readArray(buffer, coordinates,
                 (buf, aHelper) -> this.readCoordinate(buf, aHelper, strings));
-        CoordinateEvaluationOrder evalOrder = EVALUATION_ORDERS[VarInts.readInt(buffer)];
+        CoordinateEvaluationOrder evalOrder = NullableEnum.get(EVALUATION_ORDERS, VarInts.readInt(buffer));
         int chancePercentTypeInt = VarInts.readInt(buffer);
-        ExpressionOp chancePercentType = chancePercentTypeInt == -1 ? null : EXPRESSION_OPS[chancePercentTypeInt];
+        ExpressionOp chancePercentType = chancePercentTypeInt == -1 ? null : NullableEnum.get(EXPRESSION_OPS, chancePercentTypeInt);
         Indexed<String> chancePercent = new Indexed<>(strings, buffer.readShortLE());
         int chanceNumerator = buffer.readIntLE();
         int chanceDenominator = buffer.readIntLE();
         int iterationTypeInt = VarInts.readInt(buffer);
-        ExpressionOp iterationsType = iterationTypeInt == -1 ? null : EXPRESSION_OPS[iterationTypeInt];
+        ExpressionOp iterationsType = iterationTypeInt == -1 ? null : NullableEnum.get(EXPRESSION_OPS, iterationTypeInt);
         Indexed<String> iterations = new Indexed<>(strings, buffer.readShortLE());
 
         return new BiomeScatterParamData(coordinates, evalOrder, chancePercentType,
@@ -276,7 +276,7 @@ public class BiomeDefinitionListSerializer_v800 implements BedrockPacketSerializ
         Indexed<String> maxValue = new Indexed<>(strings, buffer.readShortLE());
         long gridOffset = buffer.readUnsignedIntLE();
         long gridStepSize = buffer.readUnsignedIntLE();
-        RandomDistributionType distribution = RANDOM_DISTRIBUTION_TYPES[VarInts.readInt(buffer)];
+        RandomDistributionType distribution = NullableEnum.get(RANDOM_DISTRIBUTION_TYPES, VarInts.readInt(buffer));
 
         return new BiomeCoordinateData(minValueType, minValue, maxValueType,
                 maxValue, gridOffset, gridStepSize, distribution);
@@ -481,7 +481,7 @@ public class BiomeDefinitionListSerializer_v800 implements BedrockPacketSerializ
     }
 
     protected BiomeWeightedTemperatureData readWeightedTemperature(ByteBuf buffer, BedrockCodecHelper helper) {
-        BiomeTemperatureCategory temperature = TEMPERATURE_CATEGORIES[VarInts.readInt(buffer)];
+        BiomeTemperatureCategory temperature = NullableEnum.get(TEMPERATURE_CATEGORIES, VarInts.readInt(buffer));
         int weight = buffer.readIntLE();
         return new BiomeWeightedTemperatureData(temperature, weight);
     }
@@ -535,10 +535,7 @@ public class BiomeDefinitionListSerializer_v800 implements BedrockPacketSerializ
 
     protected ExpressionOp readExpressionOp(ByteBuf buffer) {
         int index = VarInts.readInt(buffer);
-        if (index == -1) {
-            return null;
-        }
-        return EXPRESSION_OPS[index];
+        return NullableEnum.get(EXPRESSION_OPS, index);
     }
 
     protected void writeExpressionOp(ByteBuf buffer, ExpressionOp expressionOp) {

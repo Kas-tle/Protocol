@@ -7,6 +7,7 @@ import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.v776.serializer.CameraAimAssistPresetsSerializer_v776;
 import org.cloudburstmc.protocol.bedrock.data.camera.CameraAimAssistOperation;
 import org.cloudburstmc.protocol.bedrock.packet.CameraAimAssistPresetsPacket;
+import org.cloudburstmc.protocol.common.util.NullableEnum;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class CameraAimAssistPresetsSerializer_v800 extends CameraAimAssistPresetsSerializer_v776 {
@@ -26,6 +27,6 @@ public class CameraAimAssistPresetsSerializer_v800 extends CameraAimAssistPreset
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, CameraAimAssistPresetsPacket packet) {
         helper.readArray(buffer, packet.getCategoryDefinitions(), this::readCategory);
         helper.readArray(buffer, packet.getPresets(), this::readPreset);
-        packet.setOperation(OPERATIONS[buffer.readUnsignedByte()]);
+        packet.setOperation(NullableEnum.get(OPERATIONS, buffer.readUnsignedByte()));
     }
 }
