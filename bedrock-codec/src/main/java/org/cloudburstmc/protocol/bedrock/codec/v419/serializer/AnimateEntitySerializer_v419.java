@@ -47,4 +47,9 @@ public class AnimateEntitySerializer_v419 implements BedrockPacketSerializer<Ani
             runtimeIds.add(VarInts.readUnsignedLong(buffer));
         }
     }
+
+    @Override
+    public void incrementallyDeserialize(ByteBuf buffer, BedrockCodecHelper helper, AnimateEntityPacket packet) {
+        
+    }
 }

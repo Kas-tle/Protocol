@@ -109,6 +109,10 @@ public final class BedrockCodec {
         return this.helperFactory.get();
     }
 
+    public int getPacketsByIdLength() {
+        return this.packetsById.length;
+    }
+
     public Builder toBuilder() {
         Builder builder = new Builder();
 

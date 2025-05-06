@@ -35,7 +35,7 @@ public class PlayerListPacket implements BedrockPacket {
     @Data
     @ToString(doNotUseGetters = true)
     @EqualsAndHashCode(doNotUseGetters = true)
-    public final static class Entry {
+    public static class Entry {
         private final UUID uuid;
         private long entityId;
         private String name;

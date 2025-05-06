@@ -1,10 +1,10 @@
 package org.cloudburstmc.protocol.bedrock.packet;
 
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import lombok.Value;
 import org.cloudburstmc.protocol.bedrock.data.ExperimentData;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
@@ -35,7 +35,8 @@ public class ResourcePackStackPacket implements BedrockPacket {
         return BedrockPacketType.RESOURCE_PACK_STACK;
     }
 
-    @Value
+    @Data
+    @AllArgsConstructor
     public static class Entry {
         private final String packId;
         private final String packVersion;

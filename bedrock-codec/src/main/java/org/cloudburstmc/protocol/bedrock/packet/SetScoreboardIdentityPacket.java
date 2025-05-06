@@ -1,10 +1,10 @@
 package org.cloudburstmc.protocol.bedrock.packet;
 
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import lombok.Value;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 import java.util.List;
@@ -31,7 +31,8 @@ public class SetScoreboardIdentityPacket implements BedrockPacket {
         REMOVE
     }
 
-    @Value
+    @Data
+    @AllArgsConstructor
     public static class Entry {
         private final long scoreboardId;
         private final UUID uuid;

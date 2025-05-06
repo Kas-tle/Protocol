@@ -62,9 +62,9 @@ public class Zlib {
                     break;
                 }
                 decompressed.writerIndex(index + written);
-                if (maxSize > 0 && decompressed.writerIndex() >= maxSize) {
-                    throw new DataFormatException("Inflated data exceeds maximum size");
-                }
+                // if (maxSize > 0 && decompressed.writerIndex() >= maxSize) {
+                //     throw new DataFormatException("Inflated data exceeds maximum size");
+                // }
             }
             return decompressed;
         } catch (DataFormatException e) {
