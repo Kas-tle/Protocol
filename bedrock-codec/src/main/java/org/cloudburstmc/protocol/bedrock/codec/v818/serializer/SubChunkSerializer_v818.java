@@ -7,6 +7,7 @@ import org.cloudburstmc.protocol.bedrock.data.HeightMapDataType;
 import org.cloudburstmc.protocol.bedrock.data.SubChunkData;
 import org.cloudburstmc.protocol.bedrock.data.SubChunkRequestResult;
 import org.cloudburstmc.protocol.bedrock.packet.SubChunkPacket;
+import org.cloudburstmc.protocol.common.util.NullableEnum;
 
 public class SubChunkSerializer_v818 extends SubChunkSerializer_v486 {
 
@@ -38,15 +39,15 @@ public class SubChunkSerializer_v818 extends SubChunkSerializer_v486 {
     protected SubChunkData deserializeSubChunk(ByteBuf buffer, BedrockCodecHelper helper, SubChunkPacket packet) {
         SubChunkData subChunk = new SubChunkData();
         subChunk.setPosition(this.readSubChunkOffset(buffer));
-        subChunk.setResult(SubChunkRequestResult.values()[buffer.readByte()]);
+        subChunk.setResult(NullableEnum.get(SubChunkRequestResult.values(), buffer.readByte()));
         if (subChunk.getResult() != SubChunkRequestResult.SUCCESS_ALL_AIR || !packet.isCacheEnabled()) {
             subChunk.setData(helper.readByteBuf(buffer));
         }
-        subChunk.setHeightMapType(HeightMapDataType.values()[buffer.readByte()]);
+        subChunk.setHeightMapType(NullableEnum.get(HeightMapDataType.values(), buffer.readByte()));
         if (subChunk.getHeightMapType() == HeightMapDataType.HAS_DATA) {
             subChunk.setHeightMapData(buffer.readRetainedSlice(HEIGHT_MAP_LENGTH));
         }
-        subChunk.setRenderHeightMapType(HeightMapDataType.values()[buffer.readByte()]);
+        subChunk.setRenderHeightMapType(NullableEnum.get(HeightMapDataType.values(), buffer.readByte()));
         if (subChunk.getRenderHeightMapType() == HeightMapDataType.HAS_DATA) {
             subChunk.setRenderHeightMapData(buffer.readRetainedSlice(HEIGHT_MAP_LENGTH));
         }
