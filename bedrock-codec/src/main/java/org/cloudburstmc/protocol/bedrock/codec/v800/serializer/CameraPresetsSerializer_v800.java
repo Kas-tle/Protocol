@@ -16,7 +16,7 @@ public class CameraPresetsSerializer_v800 extends CameraPresetsSerializer_v776 {
 
     public static final CameraPresetsSerializer_v800 INSTANCE = new CameraPresetsSerializer_v800();
 
-    private static final ControlScheme[] VALUES = ControlScheme.values();
+    protected static final ControlScheme[] VALUES = ControlScheme.values();
 
     @Override
     public void writePreset(ByteBuf buffer, BedrockCodecHelper helper, CameraPreset preset) {
