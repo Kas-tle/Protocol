@@ -5,6 +5,7 @@ import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.v712.serializer.CorrectPlayerMovePredictionSerializer_v712;
 import org.cloudburstmc.protocol.bedrock.data.PredictionType;
 import org.cloudburstmc.protocol.bedrock.packet.CorrectPlayerMovePredictionPacket;
+import org.cloudburstmc.protocol.common.util.NullableEnum;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
 public class CorrectPlayerMovePredictionSerializer_v827 extends CorrectPlayerMovePredictionSerializer_v712 {
@@ -23,7 +24,7 @@ public class CorrectPlayerMovePredictionSerializer_v827 extends CorrectPlayerMov
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, CorrectPlayerMovePredictionPacket packet) {
-        packet.setPredictionType(PredictionType.values()[buffer.readUnsignedByte()]);
+        packet.setPredictionType(NullableEnum.get(PredictionType.values(), buffer.readUnsignedByte()));
         packet.setPosition(helper.readVector3f(buffer));
         packet.setDelta(helper.readVector3f(buffer));
         this.readVehiclePrediction(buffer, helper, packet);

@@ -6,6 +6,7 @@ import org.cloudburstmc.protocol.bedrock.codec.v818.serializer.CameraInstruction
 import org.cloudburstmc.protocol.bedrock.data.camera.CameraEase;
 import org.cloudburstmc.protocol.bedrock.data.camera.CameraFovInstruction;
 import org.cloudburstmc.protocol.bedrock.packet.CameraInstructionPacket;
+import org.cloudburstmc.protocol.common.util.NullableEnum;
 
 public class CameraInstructionSerializer_v827 extends CameraInstructionSerializer_v818 {
 
@@ -28,7 +29,7 @@ public class CameraInstructionSerializer_v827 extends CameraInstructionSerialize
         packet.setFovInstruction(helper.readOptional(buffer, null, buf -> {
             float fow = buf.readFloatLE();
             float easeTime = buf.readFloatLE();
-            CameraEase easeType = CameraEase.values()[buf.readUnsignedByte()];
+            CameraEase easeType = NullableEnum.get(CameraEase.values(), buf.readUnsignedByte());
             boolean fovClear = buf.readBoolean();
             return new CameraFovInstruction(fow, easeTime, easeType, fovClear);
         }));
