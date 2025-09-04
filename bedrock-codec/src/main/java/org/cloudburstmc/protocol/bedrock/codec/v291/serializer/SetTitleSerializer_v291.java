@@ -17,7 +17,7 @@ public class SetTitleSerializer_v291 implements BedrockPacketSerializer<SetTitle
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, SetTitlePacket packet) {
         VarInts.writeInt(buffer, packet.getType().ordinal());
-        helper.writeString(buffer, packet.getText());
+        helper.writeComponent(buffer, packet.getText(), true);
         VarInts.writeInt(buffer, packet.getFadeInTime());
         VarInts.writeInt(buffer, packet.getStayTime());
         VarInts.writeInt(buffer, packet.getFadeOutTime());
@@ -26,7 +26,7 @@ public class SetTitleSerializer_v291 implements BedrockPacketSerializer<SetTitle
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, SetTitlePacket packet) {
         packet.setType(NullableEnum.get(SetTitlePacket.Type.values(), VarInts.readInt(buffer)));
-        packet.setText(helper.readString(buffer));
+        packet.setText(helper.readComponent(buffer, false, true));
         packet.setFadeInTime(VarInts.readInt(buffer));
         packet.setStayTime(VarInts.readInt(buffer));
         packet.setFadeOutTime(VarInts.readInt(buffer));
