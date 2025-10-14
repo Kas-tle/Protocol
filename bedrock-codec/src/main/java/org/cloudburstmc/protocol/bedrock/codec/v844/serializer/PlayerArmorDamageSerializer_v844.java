@@ -7,6 +7,7 @@ import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.v712.serializer.PlayerArmorDamageSerializer_v712;
 import org.cloudburstmc.protocol.bedrock.data.PlayerArmorDamageFlag;
 import org.cloudburstmc.protocol.bedrock.packet.PlayerArmorDamagePacket;
+import org.cloudburstmc.protocol.common.util.NullableEnum;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class PlayerArmorDamageSerializer_v844 extends PlayerArmorDamageSerializer_v712 {
@@ -26,7 +27,7 @@ public class PlayerArmorDamageSerializer_v844 extends PlayerArmorDamageSerialize
         helper.readArray(buffer, packet.getFlags(), (buf, h) -> {
             int flag = buf.readUnsignedByte() >> 1;
             packet.getDamage()[flag] = buf.readShortLE();
-            return PlayerArmorDamageFlag.values()[flag];
+            return NullableEnum.get(PlayerArmorDamageFlag.values(), flag);
         });
     }
 }

@@ -84,7 +84,7 @@ public class StartGameSerializer_v671 extends StartGameSerializer_v589 {
         packet.setDifficulty(VarInts.readInt(buffer));
         packet.setDefaultSpawn(helper.readBlockPosition(buffer));
         packet.setAchievementsDisabled(buffer.readBoolean());
-        packet.setEditorWorldType(WorldType.values()[VarInts.readInt(buffer)]);
+        packet.setEditorWorldType(NullableEnum.get(WorldType.values(), VarInts.readInt(buffer)));
         packet.setCreatedInEditor(buffer.readBoolean());
         packet.setExportedFromEditor(buffer.readBoolean());
         packet.setDayCycleStopTime(VarInts.readInt(buffer));
@@ -123,7 +123,7 @@ public class StartGameSerializer_v671 extends StartGameSerializer_v589 {
         packet.setNetherType(buffer.readBoolean());
         packet.setEduSharedUriResource(new EduSharedUriResource(helper.readString(buffer), helper.readString(buffer)));
         packet.setForceExperimentalGameplay(helper.readOptional(buffer, OptionalBoolean.empty(), buf -> OptionalBoolean.of(buf.readBoolean())));
-        packet.setChatRestrictionLevel(ChatRestrictionLevel.values()[buffer.readByte()]);
+        packet.setChatRestrictionLevel(NullableEnum.get(ChatRestrictionLevel.values(), buffer.readByte()));
         packet.setDisablingPlayerInteractions(buffer.readBoolean());
     }
 }
