@@ -8,8 +8,8 @@ import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.v419.serializer.StartGameSerializer_v419;
 import org.cloudburstmc.protocol.bedrock.data.BlockPropertyData;
 import org.cloudburstmc.protocol.bedrock.data.GameType;
-import org.cloudburstmc.protocol.bedrock.data.definitions.SimpleItemDefinition;
 import org.cloudburstmc.protocol.bedrock.packet.StartGamePacket;
+import org.cloudburstmc.protocol.common.util.TextConverter;
 import org.cloudburstmc.protocol.common.util.NullableEnum;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
@@ -30,7 +30,8 @@ public class StartGameSerializer_v428 extends StartGameSerializer_v419 {
         this.writeLevelSettings(buffer, helper, packet);
 
         helper.writeString(buffer, packet.getLevelId());
-        helper.writeComponent(buffer, packet.getLevelName(), true);
+        TextConverter converter = helper.getTextConverter();
+        helper.writeString(buffer, converter.serialize(packet.getLevelName(CharSequence.class)));
         helper.writeString(buffer, packet.getPremiumWorldTemplateId());
         buffer.writeBoolean(packet.isTrial());
         writeSyncedPlayerMovementSettings(buffer, packet); // new for v428
@@ -59,7 +60,8 @@ public class StartGameSerializer_v428 extends StartGameSerializer_v419 {
         this.readLevelSettings(buffer, helper, packet);
 
         packet.setLevelId(helper.readString(buffer));
-        packet.setLevelName(helper.readComponent(buffer, false, true));
+        TextConverter converter = helper.getTextConverter();
+        packet.setLevelName(converter.deserialize(helper.readString(buffer)));
         packet.setPremiumWorldTemplateId(helper.readString(buffer));
         packet.setTrial(buffer.readBoolean());
         readSyncedPlayerMovementSettings(buffer, packet); // new for v428

@@ -5,6 +5,7 @@ import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
 import org.cloudburstmc.protocol.bedrock.data.DisconnectFailReason;
 import org.cloudburstmc.protocol.bedrock.packet.DisconnectPacket;
+import org.cloudburstmc.protocol.common.util.TextConverter;
 import org.cloudburstmc.protocol.common.util.NullableEnum;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
@@ -16,8 +17,9 @@ public class DisconnectSerializer_v712 implements BedrockPacketSerializer<Discon
         VarInts.writeInt(buffer, packet.getReason().ordinal());
         buffer.writeBoolean(packet.isMessageSkipped());
         if (!packet.isMessageSkipped()) {
-            helper.writeComponent(buffer, packet.getKickMessage(), true);
-            helper.writeComponent(buffer, packet.getFilteredMessage(), true);
+            TextConverter converter = helper.getTextConverter();
+            helper.writeString(buffer, converter.serialize(packet.getKickMessage(CharSequence.class)));
+            helper.writeString(buffer, converter.serialize(packet.getFilteredMessage(CharSequence.class)));
         }
     }
 
@@ -26,8 +28,9 @@ public class DisconnectSerializer_v712 implements BedrockPacketSerializer<Discon
         packet.setReason(NullableEnum.get(DisconnectFailReason.values(), VarInts.readInt(buffer)));
         packet.setMessageSkipped(buffer.readBoolean());
         if (!packet.isMessageSkipped()) {
-            packet.setKickMessage(helper.readComponent(buffer, false, true));
-            packet.setFilteredMessage(helper.readComponent(buffer, false, true));
+            TextConverter converter = helper.getTextConverter();
+            packet.setKickMessage(converter.deserialize(helper.readString(buffer)));
+            packet.setFilteredMessage(converter.deserialize(helper.readString(buffer)));
         }
     }
 }

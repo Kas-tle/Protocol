@@ -1,5 +1,6 @@
 package org.cloudburstmc.protocol.bedrock.util;
 
+import lombok.ToString;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.jose4j.json.JsonUtil;
 import org.jose4j.jwt.JwtClaims;
@@ -92,7 +93,7 @@ public final class ChainValidationResult {
         String displayName = claims.getClaimValueAsString("xname");
         String xuid = claims.getClaimValueAsString("xid");
         String minecraftId = claims.getClaimValueAsString("mid");
-        UUID identity = UUID.nameUUIDFromBytes(xuid.getBytes(StandardCharsets.UTF_8));
+        UUID identity = UUID.nameUUIDFromBytes(("pocket-auth-1-xuid:" + xuid).getBytes(StandardCharsets.UTF_8));
 
         return new IdentityClaims(
                 new IdentityData(displayName, identity, xuid, null, minecraftId),
@@ -100,6 +101,7 @@ public final class ChainValidationResult {
         );
     }
 
+    @ToString
     public static final class IdentityClaims {
         public final IdentityData extraData;
         public final String identityPublicKey;
@@ -118,6 +120,7 @@ public final class ChainValidationResult {
         }
     }
 
+    @ToString
     public static final class IdentityData {
         public final String displayName;
         /**
