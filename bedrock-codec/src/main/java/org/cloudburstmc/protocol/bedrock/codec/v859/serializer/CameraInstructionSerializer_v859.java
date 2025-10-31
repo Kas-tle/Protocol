@@ -9,6 +9,7 @@ import org.cloudburstmc.protocol.bedrock.data.camera.CameraAttachToEntityInstruc
 import org.cloudburstmc.protocol.bedrock.data.camera.CameraSplineInstruction;
 import org.cloudburstmc.protocol.bedrock.data.camera.CameraSplineType;
 import org.cloudburstmc.protocol.bedrock.packet.CameraInstructionPacket;
+import org.cloudburstmc.protocol.common.util.NullableEnum;
 import org.cloudburstmc.protocol.common.util.OptionalBoolean;
 
 import java.util.ArrayList;
@@ -40,7 +41,7 @@ public class CameraInstructionSerializer_v859 extends CameraInstructionSerialize
         super.deserialize(buffer, helper, packet);
         packet.setSplineInstruction(helper.readOptional(buffer, null, buf -> {
             float totalTime = buf.readFloatLE();
-            CameraSplineType type = CameraSplineType.values()[buf.readUnsignedByte()];
+            CameraSplineType type = NullableEnum.get(CameraSplineType.values(), buf.readUnsignedByte());
             List<Vector3f> curve = new ArrayList<>();
             helper.readArray(buf, curve, helper::readVector3f);
             List<Vector2f> progressKeyFrames = new ArrayList<>();

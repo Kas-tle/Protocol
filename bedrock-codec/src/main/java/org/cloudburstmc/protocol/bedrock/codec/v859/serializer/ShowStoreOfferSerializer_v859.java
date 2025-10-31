@@ -5,6 +5,7 @@ import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.v630.serializer.ShowStoreOfferSerializer_v630;
 import org.cloudburstmc.protocol.bedrock.data.StoreOfferRedirectType;
 import org.cloudburstmc.protocol.bedrock.packet.ShowStoreOfferPacket;
+import org.cloudburstmc.protocol.common.util.NullableEnum;
 
 import java.util.UUID;
 
@@ -21,6 +22,6 @@ public class ShowStoreOfferSerializer_v859 extends ShowStoreOfferSerializer_v630
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, ShowStoreOfferPacket packet) {
         packet.setOfferId(helper.readUuid(buffer).toString());
-        packet.setRedirectType(StoreOfferRedirectType.values()[buffer.readUnsignedByte()]);
+        packet.setRedirectType(NullableEnum.get(StoreOfferRedirectType.values(), buffer.readUnsignedByte()));
     }
 }

@@ -8,6 +8,7 @@ import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
 import org.cloudburstmc.protocol.bedrock.data.GraphicsOverrideParameterType;
 import org.cloudburstmc.protocol.bedrock.packet.GraphicsParameterOverridePacket;
+import org.cloudburstmc.protocol.common.util.NullableEnum;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
 import java.util.HashMap;
@@ -40,7 +41,7 @@ public class GraphicsParameterOverrideSerializer_v859 implements BedrockPacketSe
         }
         packet.setValues(values);
         packet.setBiomeIdentifier(helper.readString(buffer));
-        packet.setParameterType(GraphicsOverrideParameterType.values()[buffer.readUnsignedByte()]);
+        packet.setParameterType(NullableEnum.get(GraphicsOverrideParameterType.values(), buffer.readUnsignedByte()));
         packet.setReset(buffer.readBoolean());
     }
 }
