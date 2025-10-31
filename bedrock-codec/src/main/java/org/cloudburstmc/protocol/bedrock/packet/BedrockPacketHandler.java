@@ -915,4 +915,12 @@ public interface BedrockPacketHandler extends PacketHandler {
     default PacketSignal handle(ServerboundPackSettingChangePacket packet) {
         return PacketSignal.UNHANDLED;
     }
+
+    default PacketSignal handle(GraphicsParameterOverridePacket packet) {
+        return PacketSignal.UNHANDLED;
+    }
+
+    default PacketSignal handle(ServerPlayerPostMovePositionPacket packet) {
+        return PacketSignal.UNHANDLED;
+    }
 }
