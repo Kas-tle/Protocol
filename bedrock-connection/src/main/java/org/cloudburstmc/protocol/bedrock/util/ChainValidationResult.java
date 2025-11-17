@@ -64,7 +64,7 @@ public final class ChainValidationResult {
 
     public IdentityClaims identityClaims() throws IllegalStateException {
         if (identityClaims == null) {
-            if (parsedPayload == null) {
+            if (jwtContext != null) {
                 identityClaims = createClaims();
             } else {
                 identityClaims = createLegacyClaims();
