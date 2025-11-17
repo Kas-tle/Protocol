@@ -4,6 +4,7 @@ import lombok.experimental.UtilityClass;
 import org.cloudburstmc.protocol.bedrock.data.auth.AuthPayload;
 import org.cloudburstmc.protocol.bedrock.data.auth.AuthType;
 import org.cloudburstmc.protocol.bedrock.data.auth.CertificateChainPayload;
+import org.cloudburstmc.protocol.bedrock.data.auth.DualPayload;
 import org.cloudburstmc.protocol.bedrock.data.auth.TokenPayload;
 import org.jose4j.json.JsonUtil;
 import org.jose4j.json.internal.json_simple.parser.JSONParser;
@@ -239,9 +240,30 @@ public class EncryptionUtils {
                 throw new IllegalStateException("Token is empty");
             }
             return validateToken(payload.getAuthType(), token);
+        } else if (payload instanceof DualPayload) {
+            DualPayload dualPayload = (DualPayload) payload;
+            List<String> chain = dualPayload.getChain();
+            String token = dualPayload.getToken();
+            if (chain == null || chain.isEmpty()) {
+                throw new IllegalStateException("Certificate chain is empty");
+            }
+            if (token == null || token.isEmpty()) {
+                throw new IllegalStateException("Token is empty");
+            }
+            return validateDual(chain, token);
         } else {
             throw new IllegalArgumentException("Unsupported AuthPayload type: " + payload.getClass().getName());
         }
+    }
+
+    public static ChainValidationResult validateDual(List<String> chain, String token)
+            throws JoseException, NoSuchAlgorithmException, InvalidKeySpecException, InvalidJwtException {
+        ChainValidationResult chainResult = validateChain(chain);
+        ChainValidationResult tokenResult = validateToken(AuthType.FULL, token);
+        if (!chainResult.signed() || !tokenResult.signed()) {
+            throw new IllegalStateException("Invalid chain or token in DualPayload");
+        }
+        return new ChainValidationResult(true, tokenResult.getJwtContext(), chainResult.getParsedPayload());
     }
 
     public static ChainValidationResult validateChain(List<String> chain)

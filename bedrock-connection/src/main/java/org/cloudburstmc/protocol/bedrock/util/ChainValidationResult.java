@@ -1,5 +1,6 @@
 package org.cloudburstmc.protocol.bedrock.util;
 
+import lombok.Getter;
 import lombok.ToString;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.jose4j.json.JsonUtil;
@@ -20,7 +21,9 @@ import static org.cloudburstmc.protocol.bedrock.util.JsonUtils.childAsType;
 
 public final class ChainValidationResult {
     private final boolean signed;
+    @Getter
     private final Map<String, Object> parsedPayload;
+    @Getter
     private final JwtContext jwtContext;
 
     private IdentityClaims identityClaims;
@@ -39,6 +42,12 @@ public final class ChainValidationResult {
         this.signed = signed;
         this.jwtContext = Objects.requireNonNull(context);
         this.parsedPayload = null;
+    }
+
+    public ChainValidationResult(boolean signed, JwtContext context, Map<String, Object> parsedPayload) {
+        this.signed = signed;
+        this.parsedPayload = parsedPayload;
+        this.jwtContext = context;
     }
 
     public boolean signed() {

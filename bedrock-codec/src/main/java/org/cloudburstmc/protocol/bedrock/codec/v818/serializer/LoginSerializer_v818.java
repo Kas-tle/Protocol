@@ -4,6 +4,7 @@ import org.cloudburstmc.protocol.bedrock.codec.v291.serializer.LoginSerializer_v
 import org.cloudburstmc.protocol.bedrock.data.auth.AuthPayload;
 import org.cloudburstmc.protocol.bedrock.data.auth.AuthType;
 import org.cloudburstmc.protocol.bedrock.data.auth.CertificateChainPayload;
+import org.cloudburstmc.protocol.bedrock.data.auth.DualPayload;
 import org.cloudburstmc.protocol.bedrock.data.auth.TokenPayload;
 import org.jose4j.json.JsonUtil;
 import org.jose4j.lang.JoseException;
@@ -25,7 +26,12 @@ public class LoginSerializer_v818 extends LoginSerializer_v291 {
                 "Client requires non-null and non-UNKNOWN AuthType for login");
         Map<String, Object> object = new HashMap<>();
         object.put("AuthenticationType", payload.getAuthType().ordinal() - 1); // Adjusting ordinal to match the enum definition
-        if (payload instanceof TokenPayload) {
+        if (payload instanceof DualPayload) {
+            Map<String, Object> json = new HashMap<>();
+            json.put("chain", ((DualPayload) payload).getChain());
+            object.put("Certificate", JsonUtil.toJson(json));
+            object.put("Token", ((DualPayload) payload).getToken());
+        } else if (payload instanceof TokenPayload) {
             object.put("Token", ((TokenPayload) payload).getToken());
             object.put("Certificate", "");
         } else if (payload instanceof CertificateChainPayload) {
@@ -50,7 +56,19 @@ public class LoginSerializer_v818 extends LoginSerializer_v291 {
             }
             AuthType authType = AuthType.values()[authTypeOrdinal + 1];
 
-            if (payload.containsKey("Token") && payload.get("Token") instanceof String && !((String) payload.get("Token")).isEmpty()) {
+            if (payload.containsKey("Token") && payload.get("Token") instanceof String &&
+                payload.containsKey("Certificate") && payload.get("Certificate") instanceof String &&
+                !((String) payload.get("Token")).isEmpty() &&
+                !((String) payload.get("Certificate")).isEmpty()) {
+                String token = (String) payload.get("Token");
+                String certJson = (String) payload.get("Certificate");
+                Map<String, Object> certData = JsonUtil.parseJson(certJson);
+                if (!certData.containsKey("chain") || !(certData.get("chain") instanceof List)) {
+                    throw new IllegalArgumentException("Invalid Certificate chain in JWT");
+                }
+                List<String> chain = (List<String>) certData.get("chain");
+                return new DualPayload(chain, token, authType);
+            } else if (payload.containsKey("Token") && payload.get("Token") instanceof String && !((String) payload.get("Token")).isEmpty()) {
                 String token = (String) payload.get("Token");
                 return new TokenPayload(token, authType);
             } else if (payload.containsKey("Certificate") && payload.get("Certificate") instanceof String && !((String) payload.get("Certificate")).isEmpty()) {
