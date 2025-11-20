@@ -7,6 +7,7 @@ import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
 import org.cloudburstmc.protocol.bedrock.data.debugshape.*;
 import org.cloudburstmc.protocol.bedrock.packet.DebugDrawerPacket;
 import org.cloudburstmc.protocol.common.util.TriConsumer;
+import org.cloudburstmc.protocol.common.util.NullableEnum;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
 import java.awt.*;
@@ -118,7 +119,7 @@ public class DebugDrawerSerializer_v818 implements BedrockPacketSerializer<Debug
         long id = VarInts.readUnsignedLong(buffer);
 
         DebugShape.Type type = helper.readOptional(buffer, null,
-                (buf, aHelper) -> SHAPE_TYPES[buf.readUnsignedByte()]);
+                (buf, aHelper) -> NullableEnum.get(SHAPE_TYPES, buf.readUnsignedByte()));
         Vector3f position = helper.readOptional(buffer, null, READ_VECTOR3F);
         Float scale = helper.readOptional(buffer, null, ByteBuf::readFloatLE);
         Vector3f rotation = helper.readOptional(buffer, null, READ_VECTOR3F);
