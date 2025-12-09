@@ -8,6 +8,7 @@ import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
 import org.cloudburstmc.protocol.bedrock.data.command.CommandOutputMessage;
 import org.cloudburstmc.protocol.bedrock.data.command.CommandOutputType;
 import org.cloudburstmc.protocol.bedrock.packet.CommandOutputPacket;
+import org.cloudburstmc.protocol.common.util.NullableEnum;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
 import static java.util.Objects.requireNonNull;
@@ -32,7 +33,7 @@ public class CommandOutputSerializer_v291 implements BedrockPacketSerializer<Com
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, CommandOutputPacket packet) {
         packet.setCommandOriginData(helper.readCommandOrigin(buffer));
-        packet.setType(CommandOutputType.values()[buffer.readUnsignedByte()]);
+        packet.setType(NullableEnum.get(CommandOutputType.values(), buffer.readUnsignedByte()));
         packet.setSuccessCount(VarInts.readUnsignedInt(buffer));
 
         helper.readArray(buffer, packet.getMessages(), this::readMessage);

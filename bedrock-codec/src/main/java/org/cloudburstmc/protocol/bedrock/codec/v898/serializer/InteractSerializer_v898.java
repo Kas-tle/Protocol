@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
 import org.cloudburstmc.protocol.bedrock.packet.InteractPacket;
+import org.cloudburstmc.protocol.common.util.NullableEnum;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -24,7 +25,7 @@ public class InteractSerializer_v898 implements BedrockPacketSerializer<Interact
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, InteractPacket packet) {
-        packet.setAction(ACTIONS[buffer.readUnsignedByte()]);
+        packet.setAction(NullableEnum.get(ACTIONS, buffer.readUnsignedByte()));
         packet.setRuntimeEntityId(VarInts.readUnsignedLong(buffer));
         packet.setMousePosition(helper.readOptional(buffer, null, (b, h) -> h.readVector3f(b)));
     }

@@ -6,6 +6,7 @@ import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.v594.serializer.AvailableCommandsSerializer_v594;
 import org.cloudburstmc.protocol.bedrock.data.command.*;
+import org.cloudburstmc.protocol.common.util.NullableEnum;
 import org.cloudburstmc.protocol.common.util.LongKeys;
 import org.cloudburstmc.protocol.common.util.TypeMap;
 import org.cloudburstmc.protocol.common.util.VarInts;
@@ -58,7 +59,7 @@ public class AvailableCommandsSerializer_v898 extends AvailableCommandsSerialize
         String name = helper.readString(buffer);
         String description = helper.readString(buffer);
         Set<CommandData.Flag> flags = this.readFlags(buffer);
-        CommandPermission permissions = PERMISSIONS[PERMISSION_LEVEL.indexOf(helper.readString(buffer))];
+        CommandPermission permissions = NullableEnum.get(PERMISSIONS, PERMISSION_LEVEL.indexOf(helper.readString(buffer)));
         int aliasIndex = buffer.readIntLE();
         CommandEnumData aliases = aliasIndex == -1 ? null : enums.get(aliasIndex);
 
@@ -151,7 +152,7 @@ public class AvailableCommandsSerializer_v898 extends AvailableCommandsSerialize
             String key = enumValues.get((int) buffer.readUnsignedIntLE());
             CommandEnumData enumData = enums.get((int) buffer.readUnsignedIntLE());
             Set<CommandEnumConstraint> constraints = enumData.getValues().get(key);
-            helper.readArray(buffer, constraints, buf -> CONSTRAINTS[buf.readUnsignedByte()]);
+            helper.readArray(buffer, constraints, buf -> NullableEnum.get(CONSTRAINTS, buf.readUnsignedByte()));
         }
     }
 
