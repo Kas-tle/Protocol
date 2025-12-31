@@ -541,7 +541,7 @@ public class BiomeDefinitionListSerializer_v800 implements BedrockPacketSerializ
 
     protected ExpressionOp readExpressionOp(ByteBuf buffer) {
         int index = VarInts.readInt(buffer);
-        return NullableEnum.get(EXPRESSION_OPS, index);
+        return index == -1 ? null : NullableEnum.get(EXPRESSION_OPS, index);
     }
 
     protected void writeExpressionOp(ByteBuf buffer, ExpressionOp expressionOp) {
