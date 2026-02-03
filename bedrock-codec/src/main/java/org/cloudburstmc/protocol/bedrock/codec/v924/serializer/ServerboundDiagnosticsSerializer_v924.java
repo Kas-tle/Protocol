@@ -5,6 +5,7 @@ import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.v712.serializer.ServerboundDiagnosticsSerializer_v712;
 import org.cloudburstmc.protocol.bedrock.data.MemoryCategoryCounter;
 import org.cloudburstmc.protocol.bedrock.packet.ServerboundDiagnosticsPacket;
+import org.cloudburstmc.protocol.common.util.NullableEnum;
 
 public class ServerboundDiagnosticsSerializer_v924 extends ServerboundDiagnosticsSerializer_v712 {
 
@@ -25,6 +26,6 @@ public class ServerboundDiagnosticsSerializer_v924 extends ServerboundDiagnostic
         super.deserialize(buffer, helper, packet);
 
         helper.readArray(buffer, packet.getMemoryCategoryValues(), (buf, h) ->
-                new MemoryCategoryCounter(MemoryCategoryCounter.Category.values()[buf.readUnsignedByte()], buffer.readLongLE()));
+                new MemoryCategoryCounter(NullableEnum.get(MemoryCategoryCounter.Category.values(), buf.readUnsignedByte()), buffer.readLongLE()));
     }
 }

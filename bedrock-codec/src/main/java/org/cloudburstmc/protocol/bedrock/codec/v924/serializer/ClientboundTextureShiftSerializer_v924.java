@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
 import org.cloudburstmc.protocol.bedrock.packet.ClientboundTextureShiftPacket;
+import org.cloudburstmc.protocol.common.util.NullableEnum;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
 import java.util.ArrayList;
@@ -30,7 +31,7 @@ public class ClientboundTextureShiftSerializer_v924 implements BedrockPacketSeri
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, ClientboundTextureShiftPacket packet) {
-        packet.setAction(ClientboundTextureShiftPacket.Action.values()[buffer.readUnsignedByte()]);
+        packet.setAction(NullableEnum.get(ClientboundTextureShiftPacket.Action.values(), buffer.readUnsignedByte()));
         packet.setCollectionName(helper.readString(buffer));
         packet.setFromStep(helper.readString(buffer));
         packet.setToStep(helper.readString(buffer));

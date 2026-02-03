@@ -9,6 +9,7 @@ import org.cloudburstmc.protocol.bedrock.data.camera.CameraEase;
 import org.cloudburstmc.protocol.bedrock.data.camera.CameraSplineInstruction;
 import org.cloudburstmc.protocol.bedrock.data.camera.CameraSplineType;
 import org.cloudburstmc.protocol.bedrock.packet.CameraInstructionPacket;
+import org.cloudburstmc.protocol.common.util.NullableEnum;
 import org.cloudburstmc.protocol.common.util.OptionalBoolean;
 
 import java.util.ArrayList;
@@ -44,14 +45,14 @@ public class CameraInstructionSerializer_v924 extends CameraInstructionSerialize
         super.deserialize(buffer, helper, packet);
         packet.setSplineInstruction(helper.readOptional(buffer, null, buf -> {
             float totalTime = buf.readFloatLE();
-            CameraSplineType type = CameraSplineType.values()[buf.readUnsignedByte()];
+            CameraSplineType type = NullableEnum.get(CameraSplineType.values(), buf.readUnsignedByte());
             List<Vector3f> curve = new ArrayList<>();
             helper.readArray(buf, curve, helper::readVector3f);
             List<CameraSplineInstruction.SplineProgressOption> progressKeyFrames = new ArrayList<>();
             helper.readArray(buf, progressKeyFrames, buf2 -> {
                 float value = buf2.readFloatLE();
                 float time = buf2.readFloatLE();
-                CameraEase easingFunc = CameraEase.values()[buf2.readIntLE()];
+                CameraEase easingFunc = NullableEnum.get(CameraEase.values(), buf2.readIntLE());
                 return new CameraSplineInstruction.SplineProgressOption(value, time, easingFunc);
             });
             List<CameraSplineInstruction.SplineRotationOption> rotationOption = new ArrayList<>();

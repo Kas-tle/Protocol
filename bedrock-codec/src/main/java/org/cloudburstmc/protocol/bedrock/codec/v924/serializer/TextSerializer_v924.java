@@ -6,6 +6,7 @@ import it.unimi.dsi.fastutil.objects.ObjectList;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.v898.serializer.TextSerializer_v898;
 import org.cloudburstmc.protocol.bedrock.packet.TextPacket;
+import org.cloudburstmc.protocol.common.util.NullableEnum;
 import org.cloudburstmc.protocol.common.util.TextConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -101,7 +102,7 @@ public class TextSerializer_v924 extends TextSerializer_v898 {
 
         switch (buffer.readByte()) {
             case 0: // MessageOnly
-                TextPacket.Type type = TextPacket.Type.values()[buffer.readUnsignedByte()];
+                TextPacket.Type type = NullableEnum.get(TextPacket.Type.values(), buffer.readUnsignedByte());
                 packet.setType(type);
 
                 String text = helper.readString(buffer);
@@ -112,12 +113,12 @@ public class TextSerializer_v924 extends TextSerializer_v898 {
                 }
                 break;
             case 1: // AuthorAndMessage
-                packet.setType(TextPacket.Type.values()[buffer.readUnsignedByte()]);
+                packet.setType(NullableEnum.get(TextPacket.Type.values(), buffer.readUnsignedByte()));
                 packet.setSourceName(helper.readString(buffer));
                 packet.setMessage(converter.deserialize(helper.readString(buffer), needsTranslation));
                 break;
             case 2: // MessageAndParams
-                packet.setType(TextPacket.Type.values()[buffer.readUnsignedByte()]);
+                packet.setType(NullableEnum.get(TextPacket.Type.values(), buffer.readUnsignedByte()));
                 String text2 = helper.readString(buffer);
                 ObjectList<String> parameters = new ObjectArrayList<>();
                 helper.readArray(buffer, parameters, helper::readString);
