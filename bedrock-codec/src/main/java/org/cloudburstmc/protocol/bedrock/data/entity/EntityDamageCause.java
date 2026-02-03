@@ -3,6 +3,7 @@ package org.cloudburstmc.protocol.bedrock.data.entity;
 import org.cloudburstmc.protocol.common.util.NullableEnum;
 
 public enum EntityDamageCause {
+    NONE,
     OVERRIDE,
     CONTACT,
     ENTITY_ATTACK,
@@ -33,6 +34,8 @@ public enum EntityDamageCause {
     FREEZING,
     STALACTITE,
     STALAGMITE,
+    RAM_ATTACK,
+    SONIC_BOOM,
     CAMPFIRE,
     SOUL_CAMPFIRE,
     /**
