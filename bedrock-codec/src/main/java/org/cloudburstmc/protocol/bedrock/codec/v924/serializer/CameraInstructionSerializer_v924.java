@@ -5,6 +5,7 @@ import org.cloudburstmc.math.vector.Vector3f;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.v859.serializer.CameraInstructionSerializer_v859;
 import org.cloudburstmc.protocol.bedrock.data.camera.*;
+import org.cloudburstmc.protocol.common.util.NullableEnum;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,21 +36,21 @@ public class CameraInstructionSerializer_v924 extends CameraInstructionSerialize
     @Override
     protected CameraSplineInstruction readSplineInstruction(ByteBuf buffer, BedrockCodecHelper helper) {
         float totalTime = buffer.readFloatLE();
-        CameraSplineType type = CameraSplineType.values()[buffer.readUnsignedByte()];
+        CameraSplineType type = NullableEnum.get(CameraSplineType.values(), buffer.readUnsignedByte());
         List<Vector3f> curve = new ArrayList<>();
         helper.readArray(buffer, curve, helper::readVector3f);
         List<CameraSplineInstruction.SplineProgressOption> progressKeyFrames = new ArrayList<>();
         helper.readArray(buffer, progressKeyFrames, buf2 -> {
             float value = buf2.readFloatLE();
             float time = buf2.readFloatLE();
-            CameraEase ease = CameraEase.values()[buf2.readUnsignedByte()];
+            CameraEase ease = NullableEnum.get(CameraEase.values(), buf2.readUnsignedByte());
             return new CameraSplineInstruction.SplineProgressOption(value, time, ease);
         });
         List<CameraSplineInstruction.SplineRotationOption> rotationOption = new ArrayList<>();
         helper.readArray(buffer, rotationOption, buf2 -> {
             Vector3f keyFrameValues = helper.readVector3f(buf2);
             float keyFrameTimes = buf2.readFloatLE();
-            CameraEase ease = CameraEase.values()[buf2.readUnsignedByte()];
+            CameraEase ease = NullableEnum.get(CameraEase.values(), buf2.readUnsignedByte());
             return new CameraSplineInstruction.SplineRotationOption(keyFrameValues, keyFrameTimes, ease);
         });
         String splineIdentifier = helper.readString(buffer);

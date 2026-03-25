@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockPacketSerializer;
 import org.cloudburstmc.protocol.bedrock.packet.ServerboundDataDrivenScreenClosedPacket;
+import org.cloudburstmc.protocol.common.util.NullableEnum;
 
 import java.util.Arrays;
 import java.util.List;
@@ -29,6 +30,6 @@ public class ServerboundDataDrivenScreenClosedSerializer_v944 implements Bedrock
         packet.setFormId((int) buffer.readUnsignedIntLE());
         //Long id = helper.readOptional(buffer, null, ByteBuf::readUnsignedIntLE);
         //packet.setFormId(id == null ? null : id.intValue());
-        packet.setCloseReason(ServerboundDataDrivenScreenClosedPacket.CloseReason.values()[CLOSE_REASONS.indexOf(helper.readString(buffer))]);
+        packet.setCloseReason(NullableEnum.get(ServerboundDataDrivenScreenClosedPacket.CloseReason.values(), CLOSE_REASONS.indexOf(helper.readString(buffer))));
     }
 }
