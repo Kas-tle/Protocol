@@ -3,6 +3,7 @@ package org.cloudburstmc.protocol.bedrock.packet;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import org.checkerframework.checker.nullness.qual.Nullable;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
@@ -16,6 +17,19 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 public class ClientboundDataDrivenUIShowScreenPacket implements BedrockPacket {
 
     private String screenId;
+
+    /**
+     * The unique id of this instance of the form for tracking in scripting
+     * @since v944
+     */
+    private int formId;
+
+    /**
+     * The optional id of the data associated with this screen
+     * @since v944
+     */
+    @Nullable
+    private Integer dataInstanceId;
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {

@@ -26,16 +26,17 @@ public class CameraSplineSerializer_v924 implements BedrockPacketSerializer<Came
         helper.writeArray(buffer, packet.getSplines(), (buf, spline) -> {
             helper.writeString(buf, spline.getName());
             buf.writeFloatLE(spline.getInstruction().getTotalTime());
-            buf.writeByte(spline.getInstruction().getType().ordinal());
+            helper.writeString(buf, spline.getInstruction().getType().getSerializeName());
             helper.writeArray(buf, spline.getInstruction().getCurve(), helper::writeVector3f);
             helper.writeArray(buf, spline.getInstruction().getProgressKeyFrames(), (buf2, frame) -> {
                 buf2.writeFloatLE(frame.getValue());
                 buf2.writeFloatLE(frame.getTime());
-                buf2.writeIntLE(frame.getEasingFunc().ordinal());
+                helper.writeString(buf2, frame.getEase().getSerializeName());
             });
             helper.writeArray(buf, spline.getInstruction().getRotationOption(), (buf2, rotationOption) -> {
                 helper.writeVector3f(buf2, rotationOption.getKeyFrameValues());
                 buf2.writeFloatLE(rotationOption.getKeyFrameTimes());
+                helper.writeString(buf2, rotationOption.getEase().getSerializeName());
             });
         });
     }
@@ -47,21 +48,22 @@ public class CameraSplineSerializer_v924 implements BedrockPacketSerializer<Came
         helper.readArray(buffer, splines, (buf, h) -> {
             String name = helper.readString(buf);
             float totalTime = buf.readFloatLE();
-            CameraSplineType type = NullableEnum.get(CameraSplineType.values(), buf.readUnsignedByte());
+            CameraSplineType type = CameraSplineType.fromName(helper.readString(buf));
             List<Vector3f> curve = new ArrayList<>();
             helper.readArray(buf, curve, helper::readVector3f);
             List<CameraSplineInstruction.SplineProgressOption> progressKeyFrames = new ArrayList<>();
             helper.readArray(buf, progressKeyFrames, buf2 -> {
                 float value = buf2.readFloatLE();
                 float time = buf2.readFloatLE();
-                CameraEase easingFunc = NullableEnum.get(CameraEase.values(), buf2.readIntLE());
-                return new CameraSplineInstruction.SplineProgressOption(value, time, easingFunc);
+                CameraEase ease = CameraEase.fromName(helper.readString(buf2));
+                return new CameraSplineInstruction.SplineProgressOption(value, time, ease);
             });
             List<CameraSplineInstruction.SplineRotationOption> rotationOption = new ArrayList<>();
             helper.readArray(buf, rotationOption, buf2 -> {
                 Vector3f keyFrameValues = helper.readVector3f(buf2);
                 float keyFrameTimes = buf2.readFloatLE();
-                return new CameraSplineInstruction.SplineRotationOption(keyFrameValues, keyFrameTimes);
+                CameraEase ease = CameraEase.fromName(helper.readString(buf2));
+                return new CameraSplineInstruction.SplineRotationOption(keyFrameValues, keyFrameTimes, ease);
             });
             return new CameraSplineDefinition(name, new CameraSplineInstruction(totalTime, type, curve, progressKeyFrames, rotationOption));
         });

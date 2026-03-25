@@ -17,6 +17,9 @@ public class Bedrock_v924 extends Bedrock_v898 {
 
     protected static final EntityDataTypeMap ENTITY_DATA = Bedrock_v898.ENTITY_DATA
             .toBuilder()
+            .insert(EntityDataTypes.ARROW_SHOOTER_ID, 17, EntityDataFormat.LONG)
+            .insert(EntityDataTypes.FIREWORK_DIRECTION, 17, EntityDataFormat.VECTOR3F)
+            .insert(EntityDataTypes.FIREWORK_SHOOTER_ID, 18, EntityDataFormat.LONG)
             .insert(EntityDataTypes.AIM_ASSIST_PRIORITY_PRESET_ID, 136, EntityDataFormat.INT)
             .insert(EntityDataTypes.AIM_ASSIST_PRIORITY_CATEGORY_ID, 137, EntityDataFormat.INT)
             .insert(EntityDataTypes.AIM_ASSIST_PRIORITY_ACTOR_ID, 138, EntityDataFormat.INT)
@@ -64,7 +67,7 @@ public class Bedrock_v924 extends Bedrock_v898 {
             .updateSerializer(StartGamePacket.class, StartGameSerializer_v924.INSTANCE)
             .updateSerializer(TextPacket.class, TextSerializer_v924.INSTANCE)
             .registerPacket(ClientboundDataDrivenUIShowScreenPacket::new, ClientboundDataDrivenUIShowScreenSerializer_v924.INSTANCE, 333, PacketRecipient.CLIENT)
-            .registerPacket(ClientboundDataDrivenUICloseAllScreensPacket::new, ClientboundDataDrivenUICloseAllScreensSerializer_v924.INSTANCE, 334, PacketRecipient.CLIENT)
+            .registerPacket(ClientboundDataDrivenUICloseScreenPacket::new, ClientboundDataDrivenUICloseScreenSerializer_v924.INSTANCE, 334, PacketRecipient.CLIENT)
             .registerPacket(ClientboundDataDrivenUIReloadPacket::new, ClientboundDataDrivenUIReloadSerializer_v924.INSTANCE, 335, PacketRecipient.CLIENT)
             .registerPacket(ClientboundTextureShiftPacket::new, ClientboundTextureShiftSerializer_v924.INSTANCE, 336, PacketRecipient.CLIENT)
             .registerPacket(VoxelShapesPacket::new, VoxelShapesSerializer_v924.INSTANCE, 337, PacketRecipient.CLIENT)
