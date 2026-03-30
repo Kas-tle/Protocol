@@ -258,9 +258,16 @@ public class EncryptionUtils {
 
     public static ChainValidationResult validateDual(List<String> chain, String token)
             throws JoseException, NoSuchAlgorithmException, InvalidKeySpecException, InvalidJwtException {
-        ChainValidationResult chainResult = validateChain(chain);
+        ChainValidationResult chainResult;
+        if (chain.size() > 0 && "..".equals(chain.get(0))) {
+            // no longer include in v944 and above
+            chainResult = new ChainValidationResult(false, "..");
+        } else {
+            chainResult = validateChain(chain);
+        }
         ChainValidationResult tokenResult = validateToken(AuthType.FULL, token);
-        if (!chainResult.signed() || !tokenResult.signed()) {
+        if (!tokenResult.signed()) {
+            // we go only based on the token result for dual
             throw new IllegalStateException("Invalid chain or token in DualPayload");
         }
         return new ChainValidationResult(true, tokenResult.getJwtContext(), chainResult.getParsedPayload());
