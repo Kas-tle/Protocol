@@ -63,7 +63,7 @@ public class AnimatePacket implements BedrockPacket {
         DROP_ITEM("dropitem"),
         EVENT("event");
 
-        private static final HashMap<String, SwingSource> BY_NAME = new HashMap<>();
+        private static final HashMap<String, SwingSource> BY_NAME = new HashMap<>(values().length);
 
         static {
             for (SwingSource value : values()) {

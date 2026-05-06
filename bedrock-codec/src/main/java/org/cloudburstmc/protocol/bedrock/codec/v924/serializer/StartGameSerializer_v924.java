@@ -16,7 +16,7 @@ public class StartGameSerializer_v924 extends StartGameSerializer_v898 {
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, StartGamePacket packet) {
         super.serialize(buffer, helper, packet);
-        writeServerJoinInformation(buffer, helper, packet);
+        helper.writeOptionalNull(buffer, packet.getServerConfigurationJoinInfo(), this::writeServerJoinInfo);
 
         helper.writeString(buffer, packet.getServerId());
         helper.writeString(buffer, packet.getScenarioId());
@@ -27,7 +27,7 @@ public class StartGameSerializer_v924 extends StartGameSerializer_v898 {
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, StartGamePacket packet) {
         super.deserialize(buffer, helper, packet);
-        readServerJoinInformation(buffer, helper, packet);
+        packet.setServerConfigurationJoinInfo(helper.readOptional(buffer, null, this::readServerJoinInfo));
 
         packet.setServerId(helper.readString(buffer));
         packet.setScenarioId(helper.readString(buffer));
@@ -149,19 +149,12 @@ public class StartGameSerializer_v924 extends StartGameSerializer_v898 {
         packet.setDisablingPlayerInteractions(buffer.readBoolean());
     }
 
-    protected void writeServerJoinInformation(ByteBuf buffer, BedrockCodecHelper helper, StartGamePacket packet) {
-        buffer.writeBoolean(packet.isHasServerJoinInformation());
-
-        if (packet.isHasServerJoinInformation()) {
-            buffer.writeBoolean(false); // TODO
-        }
+    protected void writeServerJoinInfo(ByteBuf buffer, BedrockCodecHelper helper, ServerConfigurationJoinInfo info) {
+        buffer.writeBoolean(false);
     }
 
-    protected void readServerJoinInformation(ByteBuf buffer, BedrockCodecHelper helper, StartGamePacket packet) {
-        packet.setHasServerJoinInformation(buffer.readBoolean());
-
-        if (packet.isHasServerJoinInformation()) {
-            buffer.readBoolean(); // TODO
-        }
+    protected ServerConfigurationJoinInfo readServerJoinInfo(ByteBuf buffer, BedrockCodecHelper helper) {
+        buffer.readBoolean();
+        return new ServerConfigurationJoinInfo(null, null, false);
     }
 }

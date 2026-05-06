@@ -3,6 +3,7 @@ package org.cloudburstmc.protocol.bedrock.packet;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import org.checkerframework.checker.nullness.qual.Nullable;
 import org.cloudburstmc.math.vector.Vector3f;
 import org.cloudburstmc.protocol.bedrock.data.SoundEvent;
 import org.cloudburstmc.protocol.common.PacketSignal;
@@ -18,6 +19,11 @@ public class LevelSoundEventPacket implements BedrockPacket {
     private boolean babySound;
     private boolean relativeVolumeDisabled;
     private long entityUniqueId;
+    /**
+     * @since v975
+     */
+    @Nullable
+    private Vector3f fireAtPosition;
 
     @Override
     public PacketSignal handle(BedrockPacketHandler handler) {

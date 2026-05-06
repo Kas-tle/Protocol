@@ -3,6 +3,8 @@ package org.cloudburstmc.protocol.bedrock.packet;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import lombok.Value;
+import org.checkerframework.checker.nullness.qual.Nullable;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
@@ -15,7 +17,17 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 @ToString(doNotUseGetters = true)
 public class PartyChangedPacket implements BedrockPacket {
 
-    private String partyId;
+    @Nullable
+    private PartyInfo party;
+
+    @Value
+    public static class PartyInfo {
+        String partyId;
+        /**
+         * @since v975
+         */
+        boolean isPartyLeader;
+    }
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {

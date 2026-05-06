@@ -51,7 +51,8 @@ public class MoveEntityDeltaPacket implements BedrockPacket {
         HAS_HEAD_YAW,
         ON_GROUND,
         TELEPORTING,
-        FORCE_MOVE_LOCAL_ENTITY
+        FORCE_MOVE_LOCAL_ENTITY,
+        FORCE_COMPLETION
     }
 
     @Override

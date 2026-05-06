@@ -10,8 +10,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Syncs client with server voxel shape data on world join. This packet contains a copy of all behavior pack voxel shapes data.
- * Sends the serializable voxel shapes data to the client as it's needed on both the client and server.
+ * Syncs client with server voxel shape data on world join. This packet contains a copy of all behavior pack voxel shapes data and is used by StartGamePacket.
+ * Sends the serializable voxel shapes data to the client as it's needed on both the client and server. This packet should always be sent before StartGamePacket. (since v975)
  *
  * @since v924
  */

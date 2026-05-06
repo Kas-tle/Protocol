@@ -11,7 +11,7 @@ import org.cloudburstmc.protocol.bedrock.data.datastore.DataStoreUpdate;
 import org.cloudburstmc.protocol.bedrock.packet.ClientboundDataStorePacket;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
@@ -155,7 +155,7 @@ public class ClientboundDataStoreSerializer_v898 implements BedrockPacketSeriali
                 return helper.readString(buffer);
             case 6:
                 int size = VarInts.readUnsignedInt(buffer);
-                Map<String, Object> values = new HashMap<>();
+                Map<String, Object> values = new LinkedHashMap<>();
                 for (int i = 0; i < size; i++) {
                     values.put(helper.readString(buffer), readDataStoreChange(buffer, helper));
                 }

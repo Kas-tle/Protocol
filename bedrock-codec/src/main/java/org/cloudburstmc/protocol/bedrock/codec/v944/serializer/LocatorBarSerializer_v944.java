@@ -40,7 +40,7 @@ public class LocatorBarSerializer_v944 implements BedrockPacketSerializer<Locato
         return new LocatorBarPacket.Payload(actionFlag, groupHandle, waypoint);
     }
 
-    private void writeWaypoint(ByteBuf buf, BedrockCodecHelper helper, LocatorBarWaypoint waypoint) {
+    protected void writeWaypoint(ByteBuf buf, BedrockCodecHelper helper, LocatorBarWaypoint waypoint) {
         buf.writeIntLE(waypoint.getUpdateFlag());
         helper.writeOptionalNull(buf, waypoint.getVisible(), ByteBuf::writeBoolean);
         helper.writeOptionalNull(buf, waypoint.getWorldPosition(), (buf1, h, pos) -> {
@@ -53,7 +53,7 @@ public class LocatorBarSerializer_v944 implements BedrockPacketSerializer<Locato
         helper.writeOptionalNull(buf, waypoint.getEntityUniqueId(), VarInts::writeLong);
     }
 
-    private LocatorBarWaypoint readWaypoint(ByteBuf buf, BedrockCodecHelper helper) {
+    protected LocatorBarWaypoint readWaypoint(ByteBuf buf, BedrockCodecHelper helper) {
         LocatorBarWaypoint waypoint = new LocatorBarWaypoint();
         waypoint.setUpdateFlag((int) buf.readUnsignedIntLE());
         waypoint.setVisible(helper.readOptional(buf, null, ByteBuf::readBoolean));

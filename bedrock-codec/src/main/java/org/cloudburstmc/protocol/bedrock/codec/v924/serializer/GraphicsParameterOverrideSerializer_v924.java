@@ -9,7 +9,7 @@ import org.cloudburstmc.protocol.bedrock.packet.GraphicsParameterOverridePacket;
 import org.cloudburstmc.protocol.common.util.NullableEnum;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class GraphicsParameterOverrideSerializer_v924 extends GraphicsParameterOverrideSerializer_v859 {
@@ -31,7 +31,7 @@ public class GraphicsParameterOverrideSerializer_v924 extends GraphicsParameterO
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, GraphicsParameterOverridePacket packet) {
-        Map<Float, Vector3f> values = new HashMap<>();
+        Map<Float, Vector3f> values = new LinkedHashMap<>();
         int length = VarInts.readUnsignedInt(buffer);
         for (int i = 0; i < length; i++) {
             float key = buffer.readFloatLE();

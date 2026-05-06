@@ -18,6 +18,9 @@ public class AttributeLayerSettings {
         float value;
     }
 
+    /**
+     * @deprecated since v975
+     */
     @Value
     public static class StringWeight implements Weight {
         String value;

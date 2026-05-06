@@ -8,7 +8,7 @@ public enum CameraSplineType {
     CATMULL_ROM("catmullrom"),
     LINEAR("linear");
 
-    private static final Map<String, CameraSplineType> serializeNames = new HashMap<>();
+    private static final Map<String, CameraSplineType> serializeNames = new HashMap<>(values().length);
     static {
         for (CameraSplineType value : values()) {
             serializeNames.put(value.getSerializeName(), value);

@@ -13,6 +13,9 @@ import java.util.Set;
 @Data
 @EqualsAndHashCode(doNotUseGetters = true)
 @ToString(doNotUseGetters = true)
+/*
+ * ClientMovementPredictionSyncPacket
+ */
 public class MovementPredictionSyncPacket implements BedrockPacket {
     private long runtimeEntityId;
 
@@ -25,6 +28,21 @@ public class MovementPredictionSyncPacket implements BedrockPacket {
     private float jumpStrength;
     private float health;
     private float hunger;
+    /**
+     * @since v975
+     */
+    @Deprecated
+    private float unknown1;
+    /**
+     * @since v975
+     */
+    @Deprecated
+    private float unknown2;
+    /**
+     * @since v975
+     */
+    @Deprecated
+    private float unknown3;
     private boolean flying;
 
 

@@ -199,7 +199,7 @@ public class StartGamePacket implements BedrockPacket {
     /**
      * @since v924
      */
-    private boolean hasServerJoinInformation;
+    private ServerConfigurationJoinInfo serverConfigurationJoinInfo;
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {

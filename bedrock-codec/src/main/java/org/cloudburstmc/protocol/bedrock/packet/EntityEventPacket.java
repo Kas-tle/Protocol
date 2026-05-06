@@ -3,6 +3,8 @@ package org.cloudburstmc.protocol.bedrock.packet;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import org.checkerframework.checker.nullness.qual.Nullable;
+import org.cloudburstmc.math.vector.Vector3f;
 import org.cloudburstmc.protocol.bedrock.data.entity.EntityEventType;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
@@ -13,6 +15,11 @@ public class EntityEventPacket implements BedrockPacket {
     private long runtimeEntityId;
     private EntityEventType type;
     private int data;
+    /**
+     * @since v975
+     */
+    @Nullable
+    private Vector3f fireAtPosition;
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {

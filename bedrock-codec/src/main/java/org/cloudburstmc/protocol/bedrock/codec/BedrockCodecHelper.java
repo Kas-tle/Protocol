@@ -123,6 +123,10 @@ public interface BedrockCodecHelper {
 
     void writeItem(ByteBuf buffer, ItemData item);
 
+    ItemData readNetworkItemStackDescriptor(ByteBuf buffer);
+
+    void writeNetworkItemStackDescriptor(ByteBuf buffer, ItemData item);
+
     ItemData readItemInstance(ByteBuf buffer);
 
     void writeItemInstance(ByteBuf buffer, ItemData item);

@@ -14,11 +14,19 @@ public class PartyChangedSerializer_v944 implements BedrockPacketSerializer<Part
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, PartyChangedPacket packet) {
-        helper.writeString(buffer, packet.getPartyId());
+        helper.writeOptionalNull(buffer, packet.getParty(), this::writeParty);
+    }
+
+    protected void writeParty(ByteBuf buffer, BedrockCodecHelper helper, PartyChangedPacket.PartyInfo info) {
+        helper.writeString(buffer, info.getPartyId());
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, PartyChangedPacket packet) {
-        packet.setPartyId(helper.readStringMaxLen(buffer, 50));
+        packet.setParty(helper.readOptional(buffer, null, this::readParty));
+    }
+
+    protected PartyChangedPacket.PartyInfo readParty(ByteBuf buffer, BedrockCodecHelper helper) {
+        return new PartyChangedPacket.PartyInfo(helper.readString(buffer), false);
     }
 }

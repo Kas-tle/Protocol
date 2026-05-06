@@ -16,6 +16,10 @@ public class MoveEntityAbsolutePacket implements BedrockPacket {
     private boolean onGround;
     private boolean teleported;
     private boolean forceMove;
+    /**
+     * @since v975
+     */
+    private boolean forceCompletion;
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {

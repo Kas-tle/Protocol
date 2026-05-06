@@ -3,6 +3,7 @@ package org.cloudburstmc.protocol.bedrock.codec.v924.serializer;
 import io.netty.buffer.ByteBuf;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.v859.serializer.BiomeDefinitionListSerializer_v859;
+import org.cloudburstmc.protocol.bedrock.data.VillageType;
 import org.cloudburstmc.protocol.bedrock.data.biome.*;
 import org.cloudburstmc.protocol.common.util.SequencedHashSet;
 
@@ -16,7 +17,7 @@ public class BiomeDefinitionListSerializer_v924 extends BiomeDefinitionListSeria
     protected void writeDefinitionChunkGen(ByteBuf buffer, BedrockCodecHelper helper, BiomeDefinitionChunkGenData definitionChunkGen,
                                            SequencedHashSet<String> strings) {
         super.writeDefinitionChunkGen(buffer, helper, definitionChunkGen, strings);
-        helper.writeOptionalNull(buffer, definitionChunkGen.getVillageType(), (b, n) -> b.writeByte(n.intValue()));
+        helper.writeOptionalNull(buffer, definitionChunkGen.getVillageType(), (b, n) -> b.writeByte(n.ordinal()));
     }
 
     @Override
@@ -39,8 +40,8 @@ public class BiomeDefinitionListSerializer_v924 extends BiomeDefinitionListSeria
         BiomeMultinoiseGenRulesData multinoiseGenRules = helper.readOptional(buffer, null, this::readMultinoiseGenRules);
         BiomeLegacyWorldGenRulesData legacyWorldGenRules = helper.readOptional(buffer, null,
                 (buf, aHelper) -> this.readLegacyWorldGenRules(buf, aHelper, strings));
-        BiomeReplacementData replacementData = helper.readOptional(buffer, null, this::readBiomeReplacementData);
-        Number villageType = helper.readOptional(buffer, null, ByteBuf::readUnsignedByte);
+        List<BiomeReplacementData> replacementsData = helper.readOptional(buffer, null, this::readBiomeReplacementsData);
+        VillageType villageType = helper.readOptional(buffer, null, buf -> VillageType.values()[buf.readUnsignedByte()]);
 
         return new BiomeDefinitionChunkGenData(climate, consolidatedFeatures,
                 mountainParams, surfaceMaterialAdjustment,
@@ -48,6 +49,6 @@ public class BiomeDefinitionListSerializer_v924 extends BiomeDefinitionListSeria
                 hasFrozenOceanSurface, hasTheEndSurface,
                 mesaSurface, cappedSurface,
                 overworldGenRules, multinoiseGenRules,
-                legacyWorldGenRules, replacementData, villageType);
+                legacyWorldGenRules, replacementsData, villageType, null, null);
     }
 }

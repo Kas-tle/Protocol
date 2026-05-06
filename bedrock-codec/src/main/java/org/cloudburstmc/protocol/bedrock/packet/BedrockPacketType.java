@@ -247,6 +247,8 @@ public class BedrockPacketType {
     public static final BedrockPacketType SERVERBOUND_DATA_DRIVEN_SCREEN_CLOSED = new BedrockPacketType("SERVERBOUND_DATA_DRIVEN_SCREEN_CLOSED");
     public static final BedrockPacketType SYNC_WORLD_CLOCKS = new BedrockPacketType("SYNC_WORLD_CLOCKS");
     public static final BedrockPacketType CLIENTBOUND_ATTRIBUTE_LAYER_SYNC = new BedrockPacketType("CLIENTBOUND_ATTRIBUTE_LAYER_SYNC");
+    public static final BedrockPacketType SERVER_STORE_INFO = new BedrockPacketType("SERVER_STORE_INFO");
+    public static final BedrockPacketType SERVER_PRESENCE_INFO = new BedrockPacketType("SERVER_PRESENCE_INFO");
 
     @Getter
     private final String name;

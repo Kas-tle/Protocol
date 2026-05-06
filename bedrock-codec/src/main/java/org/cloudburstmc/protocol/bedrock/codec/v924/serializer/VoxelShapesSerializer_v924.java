@@ -9,10 +9,7 @@ import org.cloudburstmc.protocol.bedrock.data.SerializableVoxelShape;
 import org.cloudburstmc.protocol.bedrock.packet.VoxelShapesPacket;
 import org.cloudburstmc.protocol.common.util.VarInts;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
 public class VoxelShapesSerializer_v924 implements BedrockPacketSerializer<VoxelShapesPacket> {
@@ -68,7 +65,7 @@ public class VoxelShapesSerializer_v924 implements BedrockPacketSerializer<Voxel
 
         packet.setShapes(shapes);
 
-        Map<String, Integer> nameMap = new HashMap<>();
+        Map<String, Integer> nameMap = new LinkedHashMap<>();
 
         int size = VarInts.readUnsignedInt(buffer);
         for (int i = 0; i < size; i++) {

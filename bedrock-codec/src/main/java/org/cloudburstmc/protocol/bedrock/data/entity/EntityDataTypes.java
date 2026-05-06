@@ -316,4 +316,12 @@ public class EntityDataTypes {
     public static final EntityDataType<Long> ARROW_SHOOTER_ID = new EntityDataType<>(Long.class, "ARROW_SHOOTER_ID");
     public static final EntityDataType<Long> FIREWORK_SHOOTER_ID = new EntityDataType<>(Long.class, "FIREWORK_SHOOTER_ID");
     public static final EntityDataType<Vector3f> FIREWORK_DIRECTION = new EntityDataType<>(Vector3f.class, "FIREWORK_DIRECTION");
+    /**
+     * @since v975
+     */
+    public static final EntityDataType<Long> RESERVED_139 = new EntityDataType<>(Long.class, "RESERVED_139");
+    /**
+     * @since v975
+     */
+    public static final EntityDataType<Float> NAMEPLATE_RENDER_DISTANCE_MAX = new EntityDataType<>(Float.class, "NAMEPLATE_RENDER_DISTANCE_MAX");
 }

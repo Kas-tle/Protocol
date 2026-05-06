@@ -79,5 +79,9 @@ public enum EntityEventType {
     /**
      * @since v897
      */
-    KINETIC_DAMAGE_DEALT
+    KINETIC_DAMAGE_DEALT,
+    /**
+     * @since v975
+     */
+    HURT_WITHOUT_RECEIVING_DAMAGE
 }

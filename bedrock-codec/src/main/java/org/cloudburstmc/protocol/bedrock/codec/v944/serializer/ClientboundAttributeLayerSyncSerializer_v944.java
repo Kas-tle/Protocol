@@ -145,7 +145,7 @@ public class ClientboundAttributeLayerSyncSerializer_v944 implements BedrockPack
         return new AttributeLayerSettings(priority, weight, enabled, paused);
     }
 
-    private void writeWeight(ByteBuf buf, BedrockCodecHelper helper, AttributeLayerSettings.Weight w) {
+    protected void writeWeight(ByteBuf buf, BedrockCodecHelper helper, AttributeLayerSettings.Weight w) {
         if (w instanceof AttributeLayerSettings.FloatWeight) {
             VarInts.writeUnsignedInt(buf, 0);
             buf.writeFloatLE(((AttributeLayerSettings.FloatWeight) w).getValue());
@@ -157,7 +157,7 @@ public class ClientboundAttributeLayerSyncSerializer_v944 implements BedrockPack
         }
     }
 
-    private AttributeLayerSettings.Weight readWeight(ByteBuf buf, BedrockCodecHelper helper) {
+    protected AttributeLayerSettings.Weight readWeight(ByteBuf buf, BedrockCodecHelper helper) {
         int type = VarInts.readUnsignedInt(buf);
         switch (type) {
             case 0:
