@@ -15,7 +15,7 @@ public class ItemUseTransaction {
     private final List<LegacySetItemSlotData> legacySlots = new ObjectArrayList<>();
     private boolean usingNetIds;
     private final List<InventoryActionData> actions = new ObjectArrayList<>();
-    private int actionType;
+    private int actionType; // Interact|Attack|ItemInteract
     private Vector3i blockPosition;
     private int blockFace;
     private int hotbarSlot;

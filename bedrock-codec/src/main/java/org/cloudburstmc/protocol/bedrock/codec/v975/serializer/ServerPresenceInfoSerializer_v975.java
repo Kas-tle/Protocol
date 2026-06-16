@@ -14,15 +14,11 @@ public class ServerPresenceInfoSerializer_v975 implements BedrockPacketSerialize
 
     @Override
     public void serialize(ByteBuf buffer, BedrockCodecHelper helper, ServerPresenceInfoPacket packet) {
-        helper.writeOptionalNull(buffer, packet.getPresenceConfiguration(), (buf, h, configuration) -> {
-            h.writeString(buf, configuration.getExperienceName());
-            h.writeString(buf, configuration.getWorldName());
-        });
+        helper.writeOptionalNull(buffer, packet.getPresenceConfiguration(), helper::writePresenceConfiguration);
     }
 
     @Override
     public void deserialize(ByteBuf buffer, BedrockCodecHelper helper, ServerPresenceInfoPacket packet) {
-        packet.setPresenceConfiguration(helper.readOptional(buffer, null, (buf, h) ->
-                new ServerPresenceInfoPacket.PresenceConfiguration(h.readString(buf), h.readString(buf))));
+        packet.setPresenceConfiguration(helper.readOptional(buffer, null, helper::readPresenceConfiguration));
     }
 }

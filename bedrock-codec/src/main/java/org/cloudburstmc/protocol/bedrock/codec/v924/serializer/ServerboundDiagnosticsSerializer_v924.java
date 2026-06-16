@@ -3,7 +3,7 @@ package org.cloudburstmc.protocol.bedrock.codec.v924.serializer;
 import io.netty.buffer.ByteBuf;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.v712.serializer.ServerboundDiagnosticsSerializer_v712;
-import org.cloudburstmc.protocol.bedrock.data.MemoryCategoryCounter;
+import org.cloudburstmc.protocol.bedrock.data.diagnostics.MemoryCategoryCounter;
 import org.cloudburstmc.protocol.bedrock.packet.ServerboundDiagnosticsPacket;
 import org.cloudburstmc.protocol.common.util.NullableEnum;
 

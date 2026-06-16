@@ -3,8 +3,8 @@ package org.cloudburstmc.protocol.bedrock.codec.v975.serializer;
 import io.netty.buffer.ByteBuf;
 import org.cloudburstmc.protocol.bedrock.codec.BedrockCodecHelper;
 import org.cloudburstmc.protocol.bedrock.codec.v924.serializer.ServerboundDiagnosticsSerializer_v924;
-import org.cloudburstmc.protocol.bedrock.data.EntityDiagnosticTimingInfo;
-import org.cloudburstmc.protocol.bedrock.data.SystemDiagnosticTimingInfo;
+import org.cloudburstmc.protocol.bedrock.data.diagnostics.EntityDiagnosticTimingInfo;
+import org.cloudburstmc.protocol.bedrock.data.diagnostics.SystemDiagnosticTimingInfo;
 import org.cloudburstmc.protocol.bedrock.packet.ServerboundDiagnosticsPacket;
 
 public class ServerboundDiagnosticsSerializer_v975 extends ServerboundDiagnosticsSerializer_v924 {

@@ -29,6 +29,11 @@ public class BiomeDefinitionListSerializer_v975 extends BiomeDefinitionListSeria
         helper.writeOptionalNull(buffer, definitionChunkGen.getOverworldGenRules(),
                 (buf, aHelper, overworldGenRules) -> this.writeOverworldGenRules(buf, aHelper, overworldGenRules, strings));
 
+        helper.writeOptionalNull(buffer, definitionChunkGen.getMultinoiseGenRules(), this::writeMultinoiseGenRules);
+
+        helper.writeOptionalNull(buffer, definitionChunkGen.getLegacyWorldGenRules(),
+                (buf, aHelper, legacyWorldGenRules) -> this.writeLegacyWorldGenRules(buf, aHelper, legacyWorldGenRules, strings));
+
         helper.writeOptionalNull(buffer, definitionChunkGen.getBiomeReplacements(), this::writeBiomeReplacementsData);
 
         helper.writeOptionalNull(buffer, definitionChunkGen.getVillageType(), (b, n) -> b.writeByte(n.ordinal()));
@@ -51,8 +56,9 @@ public class BiomeDefinitionListSerializer_v975 extends BiomeDefinitionListSeria
 
     protected void writeNoiseGradientSurface(ByteBuf buffer, BedrockCodecHelper helper, BiomeNoiseGradientSurfaceData data) {
         helper.writeArray(buffer, data.getNonReplaceableBlocks(), ByteBuf::writeIntLE);
-        helper.writeArray(buffer, data.getGradientBlocks(), ByteBuf::writeIntLE);
-        helper.writeString(buffer, data.getNoiseSeedString());
+        helper.writeArray(buffer, data.getGradientBlocks(), (buf, val) ->
+                buf.writeIntLE(val.getBlock()));
+        helper.writeString(buffer, data.getNoise());
         buffer.writeIntLE(data.getFirstOctave());
         helper.writeArray(buffer, data.getAmplitudes(), ByteBuf::writeFloatLE);
     }
@@ -111,8 +117,9 @@ public class BiomeDefinitionListSerializer_v975 extends BiomeDefinitionListSeria
     protected BiomeNoiseGradientSurfaceData readNoiseGradientSurface(ByteBuf buffer, BedrockCodecHelper helper) {
         List<Integer> nonReplaceableBlocks = new ArrayList<>();
         helper.readArray(buffer, nonReplaceableBlocks, (buf, h) -> (int) buf.readUnsignedIntLE());
-        List<Integer> gradientBlocks = new ArrayList<>();
-        helper.readArray(buffer, gradientBlocks, (buf, h) -> (int) buf.readUnsignedIntLE());
+        List<NoiseBlockSpecifier> gradientBlocks = new ArrayList<>();
+        helper.readArray(buffer, gradientBlocks, (buf, h) ->
+                new NoiseBlockSpecifier(null, 0, 0, 0, (int) buf.readUnsignedIntLE()));
         String noiseSeedString = helper.readString(buffer);
         int firstOctave = buffer.readIntLE();
         List<Float> amplitudes = new ArrayList<>();

@@ -5,7 +5,13 @@ import org.cloudburstmc.protocol.common.util.NullableEnum;
 public enum CraftingDataType {
     SHAPELESS,
     SHAPED,
+    /**
+     * @deprecated since v975
+     */
     FURNACE,
+    /**
+     * @deprecated since v975
+     */
     FURNACE_DATA,
     MULTI,
     SHULKER_BOX, // USER_DATA_SHAPELESS

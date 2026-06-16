@@ -3,7 +3,7 @@ package org.cloudburstmc.protocol.bedrock.packet;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import lombok.Value;
+import org.cloudburstmc.protocol.bedrock.data.PresenceConfiguration;
 import org.cloudburstmc.protocol.common.PacketSignal;
 
 /**
@@ -17,12 +17,6 @@ import org.cloudburstmc.protocol.common.PacketSignal;
 public class ServerPresenceInfoPacket implements BedrockPacket {
 
     private PresenceConfiguration presenceConfiguration;
-
-    @Value
-    public static class PresenceConfiguration {
-        String experienceName;
-        String worldName;
-    }
 
     @Override
     public final PacketSignal handle(BedrockPacketHandler handler) {

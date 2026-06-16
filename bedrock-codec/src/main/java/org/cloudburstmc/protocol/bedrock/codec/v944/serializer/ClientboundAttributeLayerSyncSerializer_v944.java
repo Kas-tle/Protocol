@@ -62,7 +62,7 @@ public class ClientboundAttributeLayerSyncSerializer_v944 implements BedrockPack
         throw new IllegalArgumentException(type + " is not oneOf<UpdateAttributeLayersData, UpdateAttributeLayerSettingsData, UpdateEnvironmentAttributesData, RemoveEnvironmentAttributesData>");
     }
 
-    private void writeUpdateAttributeLayers(ByteBuf buf, BedrockCodecHelper helper, UpdateAttributeLayersData data) {
+    protected void writeUpdateAttributeLayers(ByteBuf buf, BedrockCodecHelper helper, UpdateAttributeLayersData data) {
         List<AttributeLayerData> layers = data.getAttributeLayers();
         helper.writeArray(buf, layers, (b, layer) -> {
             helper.writeString(b, layer.getLayerName());
@@ -73,7 +73,7 @@ public class ClientboundAttributeLayerSyncSerializer_v944 implements BedrockPack
         });
     }
 
-    private UpdateAttributeLayersData readUpdateAttributeLayers(ByteBuf buf, BedrockCodecHelper helper) {
+    protected UpdateAttributeLayersData readUpdateAttributeLayers(ByteBuf buf, BedrockCodecHelper helper) {
         List<AttributeLayerData> layers = new ArrayList<>();
         helper.readArray(buf, layers, b -> {
             String name = helper.readStringMaxLen(buf, 128);
@@ -83,7 +83,7 @@ public class ClientboundAttributeLayerSyncSerializer_v944 implements BedrockPack
             List<EnvironmentAttributeData> attrs = new ArrayList<>();
             helper.readArray(b, attrs, bb -> readEnvironmentAttribute(bb, helper), 1024);
 
-            return new AttributeLayerData(name, dim, settings, attrs);
+            return new AttributeLayerData(name, null, dim, settings, attrs);
         }, 512);
         return new UpdateAttributeLayersData(layers);
     }
@@ -130,14 +130,14 @@ public class ClientboundAttributeLayerSyncSerializer_v944 implements BedrockPack
         return new RemoveEnvironmentAttributesData(name, dim, attrs);
     }
 
-    private void writeAttributeLayerSettings(ByteBuf buf, BedrockCodecHelper helper, AttributeLayerSettings s) {
+    protected void writeAttributeLayerSettings(ByteBuf buf, BedrockCodecHelper helper, AttributeLayerSettings s) {
         buf.writeIntLE(s.getPriority());
         writeWeight(buf, helper, s.getWeight());
         buf.writeBoolean(s.isEnabled());
         buf.writeBoolean(s.isTransitionsPaused());
     }
 
-    private AttributeLayerSettings readAttributeLayerSettings(ByteBuf buf, BedrockCodecHelper helper) {
+    protected AttributeLayerSettings readAttributeLayerSettings(ByteBuf buf, BedrockCodecHelper helper) {
         int priority = buf.readIntLE();
         AttributeLayerSettings.Weight weight = readWeight(buf, helper);
         boolean enabled = buf.readBoolean();
@@ -168,7 +168,7 @@ public class ClientboundAttributeLayerSyncSerializer_v944 implements BedrockPack
         throw new IllegalArgumentException("Unknown Weight type: " + type);
     }
 
-    private void writeEnvironmentAttribute(ByteBuf buf, BedrockCodecHelper helper, EnvironmentAttributeData e) {
+    protected void writeEnvironmentAttribute(ByteBuf buf, BedrockCodecHelper helper, EnvironmentAttributeData e) {
         helper.writeString(buf, e.getAttributeName());
         helper.writeOptionalNull(buf, e.getFrom(), (b, attr) -> writeAttributeData(b, helper, attr));
         writeAttributeData(buf, helper, e.getAttribute());
@@ -178,7 +178,7 @@ public class ClientboundAttributeLayerSyncSerializer_v944 implements BedrockPack
         helper.writeString(buf, e.getEasing().getSerializeName());
     }
 
-    private EnvironmentAttributeData readEnvironmentAttribute(ByteBuf buf, BedrockCodecHelper helper) {
+    protected EnvironmentAttributeData readEnvironmentAttribute(ByteBuf buf, BedrockCodecHelper helper) {
         String name = helper.readStringMaxLen(buf, 128);
 
         AttributeData from = helper.readOptional(buf, null, b -> readAttributeData(b, helper));
@@ -190,7 +190,7 @@ public class ClientboundAttributeLayerSyncSerializer_v944 implements BedrockPack
 
         CameraEase easing = CameraEase.fromName(helper.readString(buf));
 
-        return new EnvironmentAttributeData(name, from, attribute, to, currentTicks, totalTicks, easing);
+        return new EnvironmentAttributeData(name, from, attribute, to, currentTicks, totalTicks, easing, 0, false);
     }
 
     private static final List<String> BOOL_OPERATIONS = Arrays.asList("override", "alpha_blend", "and", "nand", "or", "nor", "xor", "xnor");
@@ -220,7 +220,7 @@ public class ClientboundAttributeLayerSyncSerializer_v944 implements BedrockPack
         }
     }
 
-    private AttributeData readAttributeData(ByteBuf buf, BedrockCodecHelper helper) {
+    protected AttributeData readAttributeData(ByteBuf buf, BedrockCodecHelper helper) {
         int type = VarInts.readUnsignedInt(buf);
         switch (type) {
             case 0:

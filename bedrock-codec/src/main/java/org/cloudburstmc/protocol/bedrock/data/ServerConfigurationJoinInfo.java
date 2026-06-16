@@ -10,5 +10,6 @@ public class ServerConfigurationJoinInfo {
     GatheringsConfigurationJoinInfo gatheringsConfigurationJoinInfo;
     @Nullable
     ClientStoreEntrypointConfiguration clientStoreEntrypointConfiguration;
-    boolean hasPresenceConfiguration;
+    @Nullable
+    PresenceConfiguration presenceConfiguration;
 }

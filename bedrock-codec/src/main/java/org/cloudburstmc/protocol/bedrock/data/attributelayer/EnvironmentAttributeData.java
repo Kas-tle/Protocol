@@ -13,7 +13,15 @@ public class EnvironmentAttributeData {
     AttributeData attribute;
     @Nullable
     AttributeData to;
-    int CurrentTransitionTicks;
-    int TotalTransitionTicks;
+    int currentTransitionTicks;
+    int totalTransitionTicks;
     CameraEase easing;
+    /**
+     * @since v1001
+     */
+    int localTransitionTicks;
+    /**
+     * @since v1001
+     */
+    boolean noiseTransition;
 }
