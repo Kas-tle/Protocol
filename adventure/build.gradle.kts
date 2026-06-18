@@ -5,6 +5,7 @@ dependencies {
 
     // Tests
     testImplementation(libs.junit)
+    testRuntimeOnly(libs.junit.platform.launcher)
 }
 
 tasks.jar {
